@@ -3,6 +3,7 @@ import axios from 'axios'
 import Numerot from './components/Numerot'
 import Uusi from './components/Uusi'
 import Rajaa from './components/Rajaa'
+import personService from './services/persons'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -13,11 +14,11 @@ const App = () => {
     //Haetaan data palvelimelta
     useEffect(() => {
         console.log('effect')
-        axios
-        .get('http://localhost:3001/persons')
-        .then(resp => {
+        personService
+        .getAll()
+        .then(initialPersons => {
             console.log('promise fulfilled')
-            setPersons(resp.data)
+            setPersons(initialPersons)
         })
     }, [])
     console.log('render', persons.length, 'persons');
@@ -40,12 +41,13 @@ const App = () => {
             const obj = {
                 name: newName,
                 number: newNro
-            }
-            setPersons(persons.concat(obj))
-            console.log('uusi nimi: ', newName) 
-            axios
-            .post('http://localhost:3001/persons', obj)
-            .then(resp => console.log(resp))
+            } 
+            personService
+            .create(obj)
+            .then(returnedPers => {
+                console.log('uusi obj lisätty: ', obj)
+                setPersons(persons.concat(returnedPers))
+            })
           }else{
             console.log('NIMI ON JO')
             alert(`${newName} on jo luettelossa`)
