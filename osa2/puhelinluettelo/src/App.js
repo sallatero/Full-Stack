@@ -33,12 +33,19 @@ const App = () => {
     }
     const handleSubmit = (event) => {
         event.preventDefault()
-       
+        
         //Tarkistetaan onko nimi jo taulukossa, jos ei, lisätään
         let is = persons.find(e => 0 === newName.localeCompare(e.name, undefined, {sensitivity: 'base'}))
         if (is === undefined){
-            setPersons(persons.concat({name: newName, number: newNro}))
+            const obj = {
+                name: newName,
+                number: newNro
+            }
+            setPersons(persons.concat(obj))
             console.log('uusi nimi: ', newName) 
+            axios
+            .post('http://localhost:3001/persons', obj)
+            .then(resp => console.log(resp))
           }else{
             console.log('NIMI ON JO')
             alert(`${newName} on jo luettelossa`)
