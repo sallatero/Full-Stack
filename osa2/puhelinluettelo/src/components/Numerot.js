@@ -10,11 +10,24 @@ const Numerot = (props) => {
     console.log('reg: ', reg);
     let filtered = props.persons.filter(person => reg.test(person.name))
     console.log('filtered: ', filtered);
+    
     return (
         <div className="name-list">
-             {filtered.map(person => <p key={person.name}>{person.name}: {person.number}</p>)}
+             {filtered.map(person => <Person key={person.id} person={person} remove={() => props.removeId(person.id)}/>)}
         </div>
     )
 }
+
+const Person = (props) => {
+    return (
+        <p>{props.person.name}: {props.person.number}<button onClick={props.remove}>poista</button></p>
+    )
+}
+
+/*
+const Poistonappi = (props) => {
+    //onClickille pitää antaa funktio, eli () => tapahtumankästehdas(id)
+    return <button onClick={() => props.removeId(props.id)}>poista</button>
+}*/
 
 export default Numerot

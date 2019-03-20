@@ -16,4 +16,10 @@ const update = (id, newObject) => {
     return request.then(resp => resp.data)
 }
 
-export default {getAll, create, update}
+//Poisto tapahtuu HTTP DELETE-pyynnöllä resurssin osoitteeseen, ei tarvi lähettää dataa
+const remove = id => {
+    const request = axios.delete(`${baseUrl}/${id}`)
+    return request.then(resp => resp.data)
+}
+
+export default {getAll, create, update, remove}

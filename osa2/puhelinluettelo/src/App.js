@@ -60,6 +60,25 @@ const App = () => {
         setNewNro('')
     }
 
+    const removeId = id => {
+        console.log(`tyyppiä jonka id on ${id} halutaan poistaa`)
+        //Pyydetään käyttäjää varmistamaan
+        const p = persons.filter(p => p.id === id)
+        const name = p[0].name
+        const answer = window.confirm(`Poistetaanko ${name}?`)
+        if (answer) {
+            const url = `http://localhost:3001/persons/${id}`
+            personService
+            .remove(id)
+            .then(resp => {
+                console.log(resp)
+                setPersons(persons.filter(p => p.id !== id))
+            })
+        } else {
+            console.log('peruutettiin');
+        }
+    }
+
     return (
         <div>
             <h1>Puhelinluettelo</h1>
@@ -67,7 +86,7 @@ const App = () => {
             <h2>Lisää uusi</h2>
             <Uusi handleSubmit={handleSubmit} newName={newName} newNro={newNro} changeName={handleChangeName} changeNro={handleChangeNro}/>
             <h2>Numerot</h2>
-            <Numerot persons={persons} search={search}/>
+            <Numerot persons={persons} search={search} removeId={removeId}/>
         </div>
     )
 }
