@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios'
 import Numerot from './components/Numerot'
 import Uusi from './components/Uusi'
 import Rajaa from './components/Rajaa'
 import personService from './services/persons'
 import Kayttajaviestit from './components/Kayttajaviestit'
+
+//Puhelinluettelo Frontend
 
 const App = () => {
     const [persons, setPersons] = useState([])

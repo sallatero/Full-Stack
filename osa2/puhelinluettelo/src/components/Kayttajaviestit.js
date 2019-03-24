@@ -1,5 +1,4 @@
 import React from 'react';
-import { generateKeyPair } from 'crypto';
 
 const Kayttajaviestit = ({message, err}) => {
     const styleOk = {
