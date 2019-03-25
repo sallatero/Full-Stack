@@ -106,7 +106,7 @@ const App = () => {
         const name = p[0].name
         const answer = window.confirm(`Poistetaanko ${name}?`)
         if (answer) {
-            const url = `http://localhost:3001/persons/${id}`
+            //const url = `http://localhost:3001/persons/${id}`
             personService
             .remove(id)
             .then(resp => {
