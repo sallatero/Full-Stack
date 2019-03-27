@@ -56,6 +56,14 @@ const App = () => {
                     setMessage('')
                 }, 5000)
             })
+            .catch(error => {
+                console.log('Frontendistä: ', error.response.data)
+                setMessage(`Lisäys ei onnistunut: ${error.response.data.error}`)
+                setErr(true)
+                setTimeout(() => {
+                    setMessage('')
+                }, 5000)
+            })
           }else{
             console.log('Nimi on jo.')
             //Käyttäjän täytyy vahvistaa
