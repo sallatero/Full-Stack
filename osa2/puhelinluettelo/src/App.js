@@ -38,7 +38,7 @@ const App = () => {
     }
     const handleSubmit = (event) => {
         event.preventDefault()
-        
+        console.log('handleSubmitissä');
         //Tarkistetaan onko nimi jo taulukossa
         let is = persons.find(e => 0 === newName.localeCompare(e.name, undefined, {sensitivity: 'base'}))
         if (is === undefined){ //Jos ei, tallennetaan suoraan
@@ -49,6 +49,7 @@ const App = () => {
             personService
             .create(obj)
             .then(returnedPers => {
+                console.log('uusi nimi lisättiin');
                 setPersons(persons.concat(returnedPers))
                 setMessage(`Lisättiin ${returnedPers.name}`)
                 setErr(false)
@@ -57,6 +58,7 @@ const App = () => {
                 }, 5000)
             })
             .catch(error => {
+                console.log('Frontendistä');
                 console.log('Frontendistä: ', error.response.data)
                 setMessage(`Lisäys ei onnistunut: ${error.response.data.error}`)
                 setErr(true)
