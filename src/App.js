@@ -1,38 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
-
-const useField = (type) => {
-  const [value, setValue] = useState('')
-
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
-
-  return {
-    type,
-    value,
-    onChange
-  }
-}
-
-const useResource = (baseUrl) => {
-  const [resources, setResources] = useState([])
-
-  // ...
-
-  const create = (resource) => {
-    // ...
-  }
-
-  const service = {
-    create
-  }
-
-  return [
-    resources, service
-  ]
-}
+import { useField, useResource } from './hooks'
 
 const App = () => {
   const content = useField('text')
@@ -45,11 +13,14 @@ const App = () => {
   const handleNoteSubmit = (event) => {
     event.preventDefault()
     noteService.create({ content: content.value })
+    content.reset()
   }
  
   const handlePersonSubmit = (event) => {
     event.preventDefault()
     personService.create({ name: name.value, number: number.value})
+    name.reset()
+    number.reset()
   }
 
   return (
