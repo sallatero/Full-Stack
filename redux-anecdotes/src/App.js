@@ -5,7 +5,6 @@ const App = (props) => {
   
   const vote = (id) => {
     console.log('vote', id)
-    //Lisää ääni storeen
     
     props.store.dispatch({
       type: 'VOTE',
@@ -13,6 +12,17 @@ const App = (props) => {
         id: id
       }
     })
+  }
+  const addNew = (event) => {
+    event.preventDefault()
+    const content = event.target.text.value
+    props.store.dispatch({
+      type: 'NEW',
+      data: {
+        content
+      }
+    })
+    event.target.text.value = ''
   }
   
   return (
@@ -30,9 +40,9 @@ const App = (props) => {
         </div>
       )}
       <h2>create new</h2>
-      <form>
-        <div><input /></div>
-        <button>create</button>
+      <form onSubmit={addNew}>
+        <input name='text'/>
+        <button type='submit'>create</button>
       </form>
     </div>
   )
