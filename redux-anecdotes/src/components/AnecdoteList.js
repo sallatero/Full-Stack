@@ -1,18 +1,11 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
-import { setNotification } from '../reducers/notificationReducer';
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
-  let reg = new RegExp(props.store.getState().filter, 'i')
-  let anecdotes = props.store.getState().anecdotes.filter(a => reg.test(a.content))
-
-  /*
-//Tehdään uusi taulukko, jossa vain hakua vastaavat nimet
-let reg = new RegExp(props.search, 'i')
-console.log('reg: ', reg)
-let filtered = props.persons.filter(person => reg.test(person.name))
-console.log('filtered: ', filtered)
-*/
+  let reg = new RegExp(props.filter, 'i')
+  let anecdotes = props.anecdotes.filter(a => reg.test(a.content))
 
   const vote = (id, content) => {
     props.store.dispatch(voteAnecdote(id))
@@ -38,4 +31,13 @@ console.log('filtered: ', filtered)
   )
 }
 
-export default AnecdoteList
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    anecdotes: state.anecdotes,
+    filter: state.filter
+  }
+}
+
+const ConnectedAnecdoteList = connect(mapStateToProps)(AnecdoteList)
+export default ConnectedAnecdoteList
