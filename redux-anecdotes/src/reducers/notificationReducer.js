@@ -2,18 +2,14 @@ const notificationAtStart =  'Initial notification'
 
 const initialState = notificationAtStart
 
-/*
-const reset = () => {
+export const setNotification = (content, seconds, store) => {
+  store.dispatch(setMessage(content))
   setTimeout(() => {
-    setMessage('')
-  }, 3000)
-
-  return {
-    type: 'REMOVE'
-  }
+    store.dispatch(reset())
+  }, seconds)
 }
-*/
-export const setMessage = (content) => {
+
+const setMessage = (content) => {
   return {
     type: 'SET_MSG',
     content
@@ -25,7 +21,6 @@ const reset = () => {
     type: 'RESET'
   }
 }
-
 
 const notificationReducer = (state = initialState, action) => {
   //console.log('state now: ', state)
@@ -39,7 +34,7 @@ const notificationReducer = (state = initialState, action) => {
       return action.content
     }
     case 'RESET': {
-      return ''
+      return null
     }
     default:
       return state

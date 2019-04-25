@@ -1,14 +1,14 @@
 import React from 'react'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer';
 
 const AnecdoteList = (props) => {
   const anecdotes = props.store.getState().anecdotes
 
-  const vote = (id) => {
-    //console.log('vote', id)
+  const vote = (id, content) => {
     props.store.dispatch(voteAnecdote(id))
-    //type: 'VOTE', data: { id }
-    
+    //Notificationille tietoa
+    setNotification(`You voted '${content}'`, 5000, props.store)
   }
 
   return (
@@ -21,7 +21,7 @@ const AnecdoteList = (props) => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
           </div>
         </div>
       )}

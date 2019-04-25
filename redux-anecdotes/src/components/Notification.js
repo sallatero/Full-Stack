@@ -1,19 +1,15 @@
 import React from 'react'
-import { voteMessage } from '../reducers/notificationReducer'
 
 const Notification = (props) => {
-  const style = {
+  let style = {
     margin: 15,
     border: 'solid',
     padding: 10,
     borderWidth: 1
   }
-  /*
-  const vote = (id) => {
-    console.log('vote', id)
-    props.store.dispatch(voteMessage(content))
-    
-  }*/
+  if (props.store.getState().notification === null) {
+    style.display = 'none'
+  }
 
   return (
     <div style={style}>
