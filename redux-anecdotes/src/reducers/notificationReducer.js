@@ -2,10 +2,30 @@ const notificationAtStart =  'Initial notification'
 
 const initialState = notificationAtStart
 
-export const setNotification = (content, seconds, store) => {
-  store.dispatch(setMessage(content))
+//setMessage?
+/*
+export const setMessage = (content, time) => {
+  return async dispatch => {
+    dispatch({
+      type: 'MESSAGE',
+      content
+    })
+    setTimeout(() => {
+      dispatch({
+        type: 'MESSAGE',
+        content: ''
+      }, time)
+    })
+  }
+}
+*/
+
+export const setNotification = (content, seconds, dispatch) => {
+  console.log('setNotification: dispatch = ', dispatch)
+  
+  dispatch(setMessage(content))
   setTimeout(() => {
-    store.dispatch(reset())
+    dispatch(reset())
   }, seconds)
 }
 
@@ -23,8 +43,7 @@ const reset = () => {
 }
 
 const notificationReducer = (state = initialState, action) => {
-  //console.log('state now: ', state)
-  //console.log('action', action)
+  console.log('notificationReducer: ', action.type)
 
   switch (action.type) {
     case 'GET_MSG': {
