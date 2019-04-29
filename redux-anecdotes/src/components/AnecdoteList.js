@@ -6,9 +6,6 @@ import { bindActionCreators } from 'redux'
 
 const AnecdoteList = (props) => {
 
-  let reg = new RegExp(props.filter, 'i')
-  let anecdotes = props.anecdotes.filter(a => reg.test(a.content))
-
   const vote = (id, content) => {
     console.log('vote: id: ',id, 'props: ', props)
     props.voteAnecdote(id)
@@ -19,7 +16,7 @@ const AnecdoteList = (props) => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+      {props.visibleAnecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
@@ -34,11 +31,17 @@ const AnecdoteList = (props) => {
   )
 }
 
+//Filters and sorts anecdotes for rendering
+const anecdotesToShow = ({anecdotes, filter}) => {
+  let reg = new RegExp(filter, 'i')
+  const anecdotesToShow = anecdotes.filter(a => reg.test(a.content)).sort((a, b) => b.votes - a.votes)
+  return anecdotesToShow
+}
+
 const mapStateToProps = (state) => {
   console.log(state)
   return {
-    anecdotes: state.anecdotes,
-    filter: state.filter
+    visibleAnecdotes: anecdotesToShow(state) 
   }
 }
 
