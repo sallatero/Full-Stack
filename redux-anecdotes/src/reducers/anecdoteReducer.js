@@ -15,10 +15,10 @@ export const initializeAnecdotes = (anecdotes) => {
   }
 }
 
-export const createAnecdote = (content) => {
+export const createAnecdote = (anecdote) => {
   return {
     type: 'NEW',
-    data: { content }
+    data: { anecdote }
   }
 }
 
@@ -29,12 +29,12 @@ export const voteAnecdote = (id) => {
   }
 }
 
-const getId = () => (100000 * Math.random()).toFixed(0)
+//const getId = () => (100000 * Math.random()).toFixed(0)
 
-const asObject = (anecdote) => {
+const asObject = (data) => {
   return {
-    content: anecdote,
-    id: getId(),
+    content: data.content,
+    id: data.id,
     votes: 0
   }
 }
@@ -42,7 +42,7 @@ const asObject = (anecdote) => {
 //const initialState = anecdotesAtStart.map(asObject)
 
 const anecdoteReducer = (state = [], action) => {
-  console.log('acecdoteReducer: ', action.type, action.data)
+  console.log('anecdoteReducer: ', action.type, action.data)
 
   switch (action.type) {
     case 'INIT_ANECDOTES': {
@@ -53,7 +53,10 @@ const anecdoteReducer = (state = [], action) => {
       return newState
     }
     case 'NEW': {
-      const newState = state.concat(asObject(action.data.content)) 
+      console.log(action.data.anecdote)
+      //const o = asObject(action.data.anecdote)
+      //console.log('NEW: ', o)
+      const newState = state.concat(action.data.anecdote) 
       return newState
     }
     default:

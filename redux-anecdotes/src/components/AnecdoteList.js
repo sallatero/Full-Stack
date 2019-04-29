@@ -5,7 +5,7 @@ import { setNotification } from '../reducers/notificationReducer'
 import { bindActionCreators } from 'redux'
 
 const AnecdoteList = (props) => {
-
+  console.log('PROPS: ', props);
   const vote = (id, content) => {
     console.log('vote: id: ',id, 'props: ', props)
     props.voteAnecdote(id)
@@ -17,7 +17,7 @@ const AnecdoteList = (props) => {
     <div>
       <h2>Anecdotes</h2>
       {props.visibleAnecdotes.map(anecdote =>
-        <div key={anecdote.id}>
+        <div key={anecdote.id.toString()}>
           <div>
             {anecdote.content}
           </div>
