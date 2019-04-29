@@ -1,24 +1,4 @@
-const notificationAtStart =  'Initial notification'
-
-const initialState = notificationAtStart
-
-//setMessage?
-/*
-export const setMessage = (content, time) => {
-  return async dispatch => {
-    dispatch({
-      type: 'MESSAGE',
-      content
-    })
-    setTimeout(() => {
-      dispatch({
-        type: 'MESSAGE',
-        content: ''
-      }, time)
-    })
-  }
-}
-*/
+const initialState = null
 
 export const setNotification = (content, seconds, dispatch) => {
   console.log('setNotification: dispatch = ', dispatch)
