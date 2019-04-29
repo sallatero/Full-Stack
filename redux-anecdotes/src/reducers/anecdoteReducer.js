@@ -1,3 +1,4 @@
+/*
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -5,7 +6,14 @@ const anecdotesAtStart = [
   'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+]*/
+
+export const initializeAnecdotes = (anecdotes) => {
+  return {
+    type: 'INIT_ANECDOTES',
+    data: anecdotes
+  }
+}
 
 export const createAnecdote = (content) => {
   return {
@@ -31,12 +39,15 @@ const asObject = (anecdote) => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+//const initialState = anecdotesAtStart.map(asObject)
 
-const anecdoteReducer = (state = initialState, action) => {
-  console.log('acecdoteReducer: ', action.type)
+const anecdoteReducer = (state = [], action) => {
+  console.log('acecdoteReducer: ', action.type, action.data)
 
   switch (action.type) {
+    case 'INIT_ANECDOTES': {
+      return action.data
+    }
     case 'VOTE': {
       const newState = state.map(a => a.id === action.data.id ? {...a, votes: a.votes + 1} : a)
       return newState
