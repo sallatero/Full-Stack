@@ -5,12 +5,13 @@ import { setNotification } from '../reducers/notificationReducer'
 import { bindActionCreators } from 'redux'
 
 const AnecdoteList = (props) => {
-  console.log('PROPS: ', props);
-  const vote = (id, content) => {
-    console.log('vote: id: ',id, 'props: ', props)
-    props.voteAnecdote(id)
+  console.log('PROPS: ', props)
+
+  const vote = (anecdote) => {
+    console.log('vote: ', anecdote)
+    props.voteAnecdote(anecdote)
     //Notificationille tietoa
-    setNotification(`You voted '${content}'`, 5000, props.dispatch)
+    setNotification(`You voted '${anecdote.content}'`, 5000, props.dispatch)
   }
 
   return (
@@ -23,7 +24,7 @@ const AnecdoteList = (props) => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       )}
