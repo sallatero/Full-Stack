@@ -33,6 +33,7 @@ const AnecdoteList = (props) => {
 
 //Filters and sorts anecdotes for rendering
 const anecdotesToShow = ({anecdotes, filter}) => {
+  console.log('anecdotesToShow: ', anecdotes, filter)
   let reg = new RegExp(filter, 'i')
   const anecdotesToShow = anecdotes.filter(a => reg.test(a.content)).sort((a, b) => b.votes - a.votes)
   return anecdotesToShow

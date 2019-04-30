@@ -1,13 +1,5 @@
 import anecdoteService from '../services/anecdotes'
 
-/*
-export const initializeAnecdotes = (anecdotes) => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data: anecdotes
-  }
-}*/
-
 export const initializeAnecdotes = () => {
   return async dispatch => {
     const anecdotes = await anecdoteService.getAll()
@@ -18,10 +10,13 @@ export const initializeAnecdotes = () => {
   }
 }
 
-export const createAnecdote = (anecdote) => {
-  return {
-    type: 'NEW',
-    data: { anecdote }
+export const createAnecdote = anecdote => {
+  return async dispatch => {
+    const newAnec = await anecdoteService.createNew(anecdote)
+    dispatch({
+      type: 'NEW',
+      data: newAnec
+    })
   }
 }
 
@@ -31,18 +26,6 @@ export const voteAnecdote = (id) => {
     data: { id }
   }
 }
-
-//const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = (data) => {
-  return {
-    content: data.content,
-    id: data.id,
-    votes: 0
-  }
-}
-
-//const initialState = anecdotesAtStart.map(asObject)
 
 const anecdoteReducer = (state = [], action) => {
   console.log('anecdoteReducer: ', action.type, action.data)
@@ -56,10 +39,8 @@ const anecdoteReducer = (state = [], action) => {
       return newState
     }
     case 'NEW': {
-      console.log(action.data.anecdote)
-      //const o = asObject(action.data.anecdote)
-      //console.log('NEW: ', o)
-      const newState = state.concat(action.data.anecdote) 
+      console.log(action.data)
+      const newState = state.concat(action.data) 
       return newState
     }
     default:
