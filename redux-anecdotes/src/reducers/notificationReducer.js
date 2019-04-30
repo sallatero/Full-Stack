@@ -1,5 +1,6 @@
 const initialState = null
 
+/*
 export const setNotification = (content, seconds, dispatch) => {
   console.log('setNotification: dispatch = ', dispatch)
   
@@ -8,6 +9,27 @@ export const setNotification = (content, seconds, dispatch) => {
     dispatch(reset())
   }, seconds)
 }
+*/
+
+export const setNotification = (content, seconds) => {
+  return async dispatch => {
+    dispatch(setMessage(content))
+    setTimeout(() => {
+      dispatch(reset())
+    }, seconds)
+  }
+}
+
+/*
+export const createAnecdote = anecdote => {
+  return async dispatch => {
+    const newAnec = await anecdoteService.createNew(anecdote)
+    dispatch({
+      type: 'NEW',
+      data: newAnec
+    })
+  }
+}*/
 
 const setMessage = (content) => {
   return {

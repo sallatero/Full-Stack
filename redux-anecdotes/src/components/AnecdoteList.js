@@ -11,7 +11,8 @@ const AnecdoteList = (props) => {
     console.log('vote: ', anecdote)
     props.voteAnecdote(anecdote)
     //Notificationille tietoa
-    setNotification(`You voted '${anecdote.content}'`, 5000, props.dispatch)
+    //setNotification(`You voted '${anecdote.content}'`, 5000, props.dispatch)
+    props.setNotification(`You voted '${anecdote.content}'`, 5000)
   }
 
   return (
@@ -50,7 +51,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch,
-    ...bindActionCreators({voteAnecdote}, dispatch)
+    ...bindActionCreators({voteAnecdote, setNotification}, dispatch)
   }
 }
 

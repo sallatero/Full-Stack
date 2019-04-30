@@ -14,8 +14,8 @@ const AnecdoteForm = (props) => {
     const content = event.target.text.value
     event.target.text.value = ''
     props.createAnecdote(content)
-    setNotification(`New anecdote added '${content}'`, 5000, props.dispatch)
-  
+    //setNotification(`New anecdote added '${content}'`, 5000, props.dispatch)
+    props.setNotification(`New anecdote added '${content}'`, 5000)
   }
 
   return (
@@ -32,7 +32,7 @@ const AnecdoteForm = (props) => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch,
-    ...bindActionCreators({createAnecdote}, dispatch)
+    ...bindActionCreators({createAnecdote, setNotification}, dispatch)
   }
 }
 
