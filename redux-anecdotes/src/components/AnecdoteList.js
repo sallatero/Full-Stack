@@ -10,8 +10,6 @@ const AnecdoteList = (props) => {
   const vote = (anecdote) => {
     console.log('vote: ', anecdote)
     props.voteAnecdote(anecdote)
-    //Notificationille tietoa
-    //setNotification(`You voted '${anecdote.content}'`, 5000, props.dispatch)
     props.setNotification(`You voted '${anecdote.content}'`, 5000)
   }
 
