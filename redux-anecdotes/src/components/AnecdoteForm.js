@@ -9,7 +9,7 @@ const AnecdoteForm = (props) => {
 
   const addAnecdote = async (event) => {
     event.preventDefault()
-    event.persist()
+    event.persist() //so that input field can be emptied
     console.log('addAnecdote: ', event, props)
     const newAnec = await anecdoteService.createNew(event.target.text.value)
     console.log('newAnec: ', newAnec)
