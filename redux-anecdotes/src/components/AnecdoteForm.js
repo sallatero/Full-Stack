@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer';
+import { setNotification } from '../reducers/notificationReducer'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import { bindActionCreators } from 'redux'
 
 const AnecdoteForm = (props) => {
 

@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import { bindActionCreators } from 'redux'
 
 const AnecdoteList = (props) => {
   console.log('PROPS: ', props)
@@ -34,8 +33,11 @@ const AnecdoteList = (props) => {
 //Filters and sorts anecdotes for rendering
 const anecdotesToShow = ({anecdotes, filter}) => {
   console.log('anecdotesToShow: ', anecdotes, filter)
-  let reg = new RegExp(filter, 'i')
-  const anecdotesToShow = anecdotes.filter(a => reg.test(a.content)).sort((a, b) => b.votes - a.votes)
+  //let reg = new RegExp(filter, 'i')
+  //const anecdotesToShow = anecdotes.filter(a => reg.test(a.content)).sort((a, b) => b.votes - a.votes)
+  const anecdotesToShow = filter.length > 0 ? 
+    anecdotes.filter(a => a.content.includes(filter)) :
+    anecdotes
   return anecdotesToShow
 }
 
@@ -46,11 +48,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatch,
-    ...bindActionCreators({voteAnecdote, setNotification}, dispatch)
-  }
+const mapDispatchToProps = {
+  voteAnecdote, 
+  setNotification
 }
 
 export default connect(

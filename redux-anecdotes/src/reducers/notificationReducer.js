@@ -1,7 +1,7 @@
 const initialState = null
 
 export const setNotification = (content, seconds) => {
-  return async dispatch => {
+  return dispatch => {
     dispatch({
       type: 'SET_MSG',
       content
