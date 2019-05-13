@@ -6,10 +6,10 @@ const config = (env, argv) => {
 
   const backend_url = argv.mode === 'production'
   ? 'https://radiant-plateau-25399.herokuapp.com/api/notes'
-  : 'http://localhost:3001/notes'
+  : 'http://localhost:3003'
 
   return {
-    entry: ['@babel/polyfill', './src/index.js'],
+    entry: ['@babel/polyfill', './frontend/src/index.js'],
     output: {
       path: path.resolve(__dirname, 'build'),
       filename: 'main.js'
@@ -24,6 +24,7 @@ const config = (env, argv) => {
       rules: [
         {
           test: /\.jsx?$/,
+          exclude: /node_modules/,
           loader: 'babel-loader',
           query: {
             presets: ['@babel/preset-env', '@babel/preset-react']
