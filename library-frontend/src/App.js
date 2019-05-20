@@ -4,31 +4,46 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
-import { resultKeyNameFromField } from 'apollo-utilities';
 
 const App = () => {
   const [page, setPage] = useState('authors')
 
   const ALL_AUTHORS = gql`
-  {
-    allAuthors {
-      name,
-      born,
-      bookCount,
-      id
+    {
+      allAuthors {
+        name,
+        born,
+        bookCount,
+        id
+      }
     }
-  }
-`
-const ALL_BOOKS = gql`
-  {
-    allBooks {
-      title,
-      author,
-      published,
-      id
+  `
+  const ALL_BOOKS = gql`
+    {
+      allBooks {
+        title,
+        author,
+        published,
+        id
+      }
     }
-  }
-`
+  `
+  const CREATE_BOOK = gql`
+    mutation createBook($title: String!, $published: Int, $author: String!, $genres: [String!]!) {
+      addBook(
+        title: $title,
+        published: $published,
+        author: $author,
+        genres: $genres
+      ){
+        title
+        published
+        author
+        genres
+        id
+      }
+    }
+  `
 
   return (
     <div>
@@ -47,7 +62,7 @@ const ALL_BOOKS = gql`
         show={page === 'books'}
       />
 
-      <NewBook
+      <NewBook mutation={useMutation(CREATE_BOOK)}
         show={page === 'add'}
       />
 

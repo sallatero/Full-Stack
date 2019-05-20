@@ -13,8 +13,16 @@ const NewBook = (props) => {
 
   const submit = async (e) => {
     e.preventDefault()
-    
     console.log('add book...')
+    console.log(title, published, author, genres)
+
+    const int = parseInt(published)
+    console.log('int: ', int)
+
+    await props.mutation({
+      variables: { title: title, published: int, 
+        author: author, genres: genres }
+    })
 
     setTitle('')
     setPublished('')
@@ -24,7 +32,9 @@ const NewBook = (props) => {
   }
 
   const addGenre = () => {
-    setGenres(genres.concat(genre))
+    const newGenres = genres.concat(genre)
+    console.log('newGenres: ', newGenres)
+    setGenres([...newGenres])
     setGenre('')
   }
 
