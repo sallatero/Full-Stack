@@ -4,6 +4,7 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
+import UpdateAuthorForm from './components/UpdateAuthorForm';
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -74,7 +75,10 @@ const App = () => {
       </div>
 
     
-      <Authors result={useQuery(ALL_AUTHORS)} mutation={updateBirthYear}
+      <Authors result={useQuery(ALL_AUTHORS)}
+        show={page === 'authors'}
+      />
+      <UpdateAuthorForm result={useQuery(ALL_AUTHORS)} mutation={updateBirthYear}
         show={page === 'authors'}
       />
 
