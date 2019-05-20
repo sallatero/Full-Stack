@@ -20,11 +20,6 @@ const UpdateAuthorForm = (props) => {
     }
   )
 
-  const handleChange = (selectedOption) => {
-    console.log('Option selected ', selectedOption)
-    setSelectedOption(selectedOption)
-  }
-
   const submit = async (e) => {
     e.preventDefault()
     console.log('updating author')
@@ -36,6 +31,7 @@ const UpdateAuthorForm = (props) => {
     })
 
     setSelectedOption(null)
+    setBorn('')
   }
 
   if (props.result.loading) {
@@ -49,7 +45,7 @@ const UpdateAuthorForm = (props) => {
         <div>
           <Select 
             value={selectedOption}
-            onChange={handleChange} 
+            onChange={(selectedOption) => setSelectedOption(selectedOption)} 
             options={options}
           />
         </div>
