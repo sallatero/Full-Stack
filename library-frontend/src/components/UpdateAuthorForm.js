@@ -1,29 +1,12 @@
 import React, { useState } from 'react'
-import { gql } from 'apollo-boost'
-import { useApolloClient } from 'react-apollo-hooks'
+import Select from 'react-select'
 
 const UpdateAuthorForm = (props) => {
-  const [name, setName] = useState('')
   const [born, setBorn] = useState('')
-
-  const client = useApolloClient()
-
+  const [selectedOption, setSelectedOption] = useState(null)
+  
   if (!props.show) {
     return null
-  }
-
-  const submit = async (e) => {
-    e.preventDefault()
-    console.log('updating author...')
-
-    const int = parseInt(born)
-
-    await props.mutation({
-      variables: { name: name, setBornTo: int }
-    })
-
-    setName('')
-    setBorn('')
   }
 
   if (props.result.loading) {
@@ -31,16 +14,43 @@ const UpdateAuthorForm = (props) => {
   }
 
   const authors = props.result.data.allAuthors
-  
+  const options = authors.map(a => {
+    return { 
+     value: a.name, label: a.name }
+    }
+  )
+
+  const handleChange = (selectedOption) => {
+    console.log('Option selected ', selectedOption)
+    setSelectedOption(selectedOption)
+  }
+
+  const submit = async (e) => {
+    e.preventDefault()
+    console.log('updating author')
+
+    const int = parseInt(born)
+
+    await props.mutation({
+      variables: { name: selectedOption.label, setBornTo: int }
+    })
+
+    setSelectedOption(null)
+  }
+
+  if (props.result.loading) {
+    return <div>loading...</div>
+  }
+
   return (
     <div>
       <h2>Set birth year</h2>
       <form onSubmit={submit}>
         <div>
-          name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
+          <Select 
+            value={selectedOption}
+            onChange={handleChange} 
+            options={options}
           />
         </div>
         <div>
