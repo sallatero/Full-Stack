@@ -45,6 +45,10 @@ const App = () => {
     }
   `
 
+  const addBook = useMutation(CREATE_BOOK, {
+    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
+  })
+
   return (
     <div>
       <div>
@@ -62,7 +66,7 @@ const App = () => {
         show={page === 'books'}
       />
 
-      <NewBook mutation={useMutation(CREATE_BOOK)}
+      <NewBook mutation={addBook}
         show={page === 'add'}
       />
 
