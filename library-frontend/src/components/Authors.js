@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { gql } from 'apollo-boost'
 import { useApolloClient } from 'react-apollo-hooks'
-import { resultKeyNameFromField } from 'apollo-utilities';
 
 const Authors = (props) => {
   if (!props.show) {
     return null
   }
-  console.log('props: ', props)
 
   const client = useApolloClient()
 
