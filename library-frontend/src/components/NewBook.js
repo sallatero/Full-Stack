@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
-  const [author, setAuhtor] = useState('')
+  const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
@@ -17,7 +17,6 @@ const NewBook = (props) => {
     console.log(title, published, author, genres)
 
     const int = parseInt(published)
-    console.log('int: ', int)
 
     await props.mutation({
       variables: { title: title, published: int, 
@@ -26,7 +25,7 @@ const NewBook = (props) => {
 
     setTitle('')
     setPublished('')
-    setAuhtor('')
+    setAuthor('')
     setGenres([])
     setGenre('')
   }
@@ -52,7 +51,7 @@ const NewBook = (props) => {
           author
           <input
             value={author}
-            onChange={({ target }) => setAuhtor(target.value)}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
