@@ -3,6 +3,7 @@ import { gql } from 'apollo-boost'
 import { useApolloClient } from 'react-apollo-hooks'
 
 const Authors = (props) => {
+  console.log('Authors props: ', props)
   const client = useApolloClient()
 
   if (!props.show) {

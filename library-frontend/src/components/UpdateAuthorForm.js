@@ -26,7 +26,7 @@ const UpdateAuthorForm = (props) => {
 
     const int = parseInt(born)
 
-    await props.mutation({
+    await props.updateBirthYear({
       variables: { name: selectedOption.label, setBornTo: int }
     })
 

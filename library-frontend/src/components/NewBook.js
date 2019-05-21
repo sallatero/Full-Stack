@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
+  const [born, setBorn] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
@@ -14,18 +15,20 @@ const NewBook = (props) => {
   const submit = async (e) => {
     e.preventDefault()
     console.log('add book...')
-    console.log(title, published, author, genres)
+    console.log(title, published, author, born, genres)
 
-    const int = parseInt(published)
+    const publInt = parseInt(published)
+    const bornInt = parseInt(born)
 
     await props.mutation({
-      variables: { title: title, published: int, 
-        author: author, genres: genres }
+      variables: { title: title, published: publInt, 
+        author: author, born: bornInt, genres: genres }
     })
 
     setTitle('')
     setPublished('')
     setAuthor('')
+    setBorn('')
     setGenres([])
     setGenre('')
   }
@@ -52,6 +55,14 @@ const NewBook = (props) => {
           <input
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
+          />
+        </div>
+        <div>
+          born
+          <input
+            type='number'
+            value={born}
+            onChange={({ target }) => setBorn(target.value)}
           />
         </div>
         <div>

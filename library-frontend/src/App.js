@@ -9,39 +9,48 @@ import UpdateAuthorForm from './components/UpdateAuthorForm';
 const App = () => {
   const [page, setPage] = useState('authors')
 
+  //poistettu kenttä bookCount
   const ALL_AUTHORS = gql`
     {
       allAuthors {
-        name,
-        born,
-        bookCount,
+        name
+        born
         id
       }
     }
   `
+  //poistettu kenttö author
   const ALL_BOOKS = gql`
     {
       allBooks {
-        title,
-        author,
-        published,
+        title
+        author {
+          name
+          born
+          id
+        }
+        published
         id
       }
     }
   `
   const CREATE_BOOK = gql`
-    mutation createBook($title: String!, $published: Int, $author: String!, $genres: [String!]!) {
+    mutation createBook($title: String!, $published: Int, $author: String!, $born: Int, $genres: [String!]!) {
       addBook(
         title: $title,
         published: $published,
         author: $author,
+        born: $born,
         genres: $genres
       ){
         title
         published
-        author
         genres
         id
+        author {
+          name
+          born
+        }
       }
     }
   `
@@ -78,7 +87,7 @@ const App = () => {
       <Authors result={useQuery(ALL_AUTHORS)}
         show={page === 'authors'}
       />
-      <UpdateAuthorForm result={useQuery(ALL_AUTHORS)} mutation={updateBirthYear}
+      <UpdateAuthorForm result={useQuery(ALL_AUTHORS)} updateBirthYear={updateBirthYear}
         show={page === 'authors'}
       />
 
