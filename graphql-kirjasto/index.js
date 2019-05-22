@@ -76,7 +76,7 @@ const resolvers = {
       if (args.genre) {
         booksToReturn = booksToReturn.filter(b => b.genres.includes(args.genre))
     }*/ 
-      const books = Book.find({}).populate('author', { name: 1, id: 1 })
+      const books = Book.find({}).populate('author', { name: 1, born: 1, id: 1 })
       //console.log('books in db: ', books)
       return books
     },
@@ -94,49 +94,29 @@ const resolvers = {
   },*/
   Mutation: {
     addBook: async (root, args) => {
-      console.log('args: ', args)
+      console.log('addBook args: ', args)
 
       //If author doesn't exist in db yet, create it
-      //const authorObject = Author.findOne({ name: args.author}, { name: 1, born: 1})
-      /*
-      let authorObject = null
-      await Author.findOne({ name: args.author}, { name: 1, born: 1}, async function(err, obj) {
-        await console.log('found: ', obj)
-        authorObject = obj
-      })
-      */
       const authorQuery = await Author.find({ name: args.author })
       let authorObject = authorQuery[0]
-      console.log('authorObject 1: ', authorObject)
-
       if (!authorObject) {
         const author = new Author({ name: args.author })
-        console.log('author: ', author)
         const authorSaved = await author.save()
-        console.log('authorSaved: ', authorSaved)
         authorObject = authorSaved
       }
-      console.log('authorObject 2: ', authorObject)
+      console.log('authorObject: ', authorObject)
+
       //Create new book and link it to the correct author
-      /*
-      const book = new Book({
-        title: args.title,
-        published: args.published,
-        genres: args.genres,
-        author: authorObject.id
-      }) */
       const book = new Book({
         title: args.title,
         published: args.published,
         genres: args.genres
       })
       book.author = authorObject._id
-      console.log('book has author-id?: ', book)
       const bookSaved = await book.save()
-      console.log('bookSaved: ', bookSaved)
       
+      //Update author-field to the full object
       bookSaved.author = authorObject   
-      console.log('bookSaved with author: ', bookSaved)   
       return bookSaved
     }
     /*
