@@ -22,10 +22,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
 
 author: String, genre: String
 
- editAuthor(
-      name: String!
-      setBornTo: Int!
-    ): Author
+ 
 */
 
 const typeDefs = gql`
@@ -55,6 +52,10 @@ const typeDefs = gql`
       author: String!
       genres: [String!]!
     ): Book
+    updateAuthorBirthYear(
+      name: String!
+      setBornTo: Int!
+    ): Author
   }
 `
 
@@ -66,7 +67,7 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: () => {
+    allBooks: async () => {
       console.log('allBooks query')
       //let booksToReturn = books
       /*
@@ -76,22 +77,22 @@ const resolvers = {
       if (args.genre) {
         booksToReturn = booksToReturn.filter(b => b.genres.includes(args.genre))
     }*/ 
-      const books = Book.find({}).populate('author', { name: 1, born: 1, id: 1 })
+      const books = await Book.find({}).populate('author', { name: 1, born: 1, id: 1 })
       //console.log('books in db: ', books)
       return books
     },
-    allAuthors: () => {
+    allAuthors: async () => {
       console.log('allAuthors query')
       return Author.find({})
     }
   },
-  /*
   Author: {
-    bookCount: (root) => {
-      const authorsBooks = books.filter(b => b.author === root.name)
+    bookCount: async (root) => {
+      //const authorsBooks = books.filter(b => b.author === root.name)
+      const authorsBooks = await Book.find({ author: root._id })
       return authorsBooks.length
     } 
-  },*/
+  },
   Mutation: {
     addBook: async (root, args) => {
       console.log('addBook args: ', args)
@@ -118,7 +119,7 @@ const resolvers = {
       //Update author-field to the full object
       bookSaved.author = authorObject   
       return bookSaved
-    }
+    },
     /*
     editAuthor: (root, args) => {
       const author = authors.find(a => a.name === args.name)
@@ -129,6 +130,22 @@ const resolvers = {
       authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
       return updatedAuthor
     } */
+    updateAuthorBirthYear: async (root, args) => {
+      const authorQuery = await Author.find({ name: args.name })
+      let authorObject = authorQuery[0]
+      if (!authorObject) {
+        return null
+      }
+      //const newVersion = { ...authorObject, born: args.setBornTo }
+      const newVersion = authorObject
+      console.log('newVersion: ', newVersion)
+      newVersion.born = args.setBornTo
+      console.log('newVersion 2: ', newVersion)
+      const updatedAuthor = await Author.findByIdAndUpdate(authorObject._id, newVersion, { new: true })
+      console.log('updatedAuthor: ', updatedAuthor)
+      return updatedAuthor
+
+    }
   }
 }
 
