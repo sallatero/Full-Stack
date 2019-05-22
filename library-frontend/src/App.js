@@ -35,12 +35,11 @@ const App = () => {
     }
   `
   const CREATE_BOOK = gql`
-    mutation createBook($title: String!, $published: Int, $author: String!, $born: Int, $genres: [String!]!) {
+    mutation createBook($title: String!, $published: Int, $author: String!, $genres: [String!]!) {
       addBook(
         title: $title,
         published: $published,
         author: $author,
-        born: $born,
         genres: $genres
       ){
         title

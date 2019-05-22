@@ -17,91 +17,8 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
   console.log('error connecting to MongoDB: ', error.message)
 })
 
-let authors = [
-  {
-    name: 'Robert Martin',
-    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
-    born: 1952,
-  },
-  {
-    name: 'Martin Fowler',
-    id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
-    born: 1963
-  },
-  {
-    name: 'Fyodor Dostoevsky',
-    id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
-    born: 1821
-  },
-  { 
-    name: 'Joshua Kerievsky', // birthyear not known
-    id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
-  },
-  { 
-    name: 'Sandi Metz', // birthyear not known
-    id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
-  },
-]
-
 /*
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
-*/
 
-let books = [
-  {
-    title: 'Clean Code',
-    published: 2008,
-    author: 'Robert Martin',
-    id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring']
-  },
-  {
-    title: 'Agile software development',
-    published: 2002,
-    author: 'Robert Martin',
-    id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
-    genres: ['agile', 'patterns', 'design']
-  },
-  {
-    title: 'Refactoring, edition 2',
-    published: 2018,
-    author: 'Martin Fowler',
-    id: "afa5de00-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring']
-  },
-  {
-    title: 'Refactoring to patterns',
-    published: 2008,
-    author: 'Joshua Kerievsky',
-    id: "afa5de01-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring', 'patterns']
-  },  
-  {
-    title: 'Practical Object-Oriented Design, An Agile Primer Using Ruby',
-    published: 2012,
-    author: 'Sandi Metz',
-    id: "afa5de02-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring', 'design']
-  },
-  {
-    title: 'Crime and punishment',
-    published: 1866,
-    author: 'Fyodor Dostoevsky',
-    id: "afa5de03-344d-11e9-a414-719c6709cf3e",
-    genres: ['classic', 'crime']
-  },
-  {
-    title: 'The Demon ',
-    published: 1872,
-    author: 'Fyodor Dostoevsky',
-    id: "afa5de04-344d-11e9-a414-719c6709cf3e",
-    genres: ['classic', 'revolution']
-  },
-]
-
-/*
-bookCount: Int!
 
 author: String, genre: String
 
@@ -114,7 +31,8 @@ author: String, genre: String
 const typeDefs = gql`
   type Author {
     name: String!
-    born: Int
+    born: Int,
+    bookCount: Int!
     id: ID!
   }  
   type Book {
@@ -135,7 +53,6 @@ const typeDefs = gql`
       title: String!
       published: Int
       author: String!
-      born: Int
       genres: [String!]!
     ): Book
   }
@@ -158,8 +75,8 @@ const resolvers = {
       }
       if (args.genre) {
         booksToReturn = booksToReturn.filter(b => b.genres.includes(args.genre))
-      }*/
-      const books = Book.find({}).populate('author', { name: 1, born: 1, id: 1 })
+    }*/ 
+      const books = Book.find({}).populate('author', { name: 1, id: 1 })
       //console.log('books in db: ', books)
       return books
     },
@@ -178,28 +95,48 @@ const resolvers = {
   Mutation: {
     addBook: async (root, args) => {
       console.log('args: ', args)
-      const author = new Author({
-        name: args.author,
-        born: args.born
+
+      //If author doesn't exist in db yet, create it
+      //const authorObject = Author.findOne({ name: args.author}, { name: 1, born: 1})
+      /*
+      let authorObject = null
+      await Author.findOne({ name: args.author}, { name: 1, born: 1}, async function(err, obj) {
+        await console.log('found: ', obj)
+        authorObject = obj
       })
-      const authorSaved = await author.save()
-      console.log('authorSaved: ', authorSaved)
+      */
+      const authorQuery = await Author.find({ name: args.author })
+      let authorObject = authorQuery[0]
+      console.log('authorObject 1: ', authorObject)
+
+      if (!authorObject) {
+        const author = new Author({ name: args.author })
+        console.log('author: ', author)
+        const authorSaved = await author.save()
+        console.log('authorSaved: ', authorSaved)
+        authorObject = authorSaved
+      }
+      console.log('authorObject 2: ', authorObject)
+      //Create new book and link it to the correct author
+      /*
       const book = new Book({
         title: args.title,
         published: args.published,
         genres: args.genres,
-        author: authorSaved.id
+        author: authorObject.id
+      }) */
+      const book = new Book({
+        title: args.title,
+        published: args.published,
+        genres: args.genres
       })
+      book.author = authorObject._id
+      console.log('book has author-id?: ', book)
       const bookSaved = await book.save()
       console.log('bookSaved: ', bookSaved)
-      bookSaved.author = authorSaved
-      //books = books.concat(book)
-      //const author = Author.findOne({ name: })
-      /*
-      if (!(authors.find(a => a.name === args.author))) {
-        const author = { name: args.author, id: uuid() }
-        authors = authors.concat(author)
-      }*/
+      
+      bookSaved.author = authorObject   
+      console.log('bookSaved with author: ', bookSaved)   
       return bookSaved
     }
     /*
