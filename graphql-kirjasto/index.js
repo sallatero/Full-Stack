@@ -53,7 +53,7 @@ const typeDefs = gql`
       genres: [String!]!
     ): Book
     updateAuthorBirthYear(
-      name: String!
+      id: String!
       setBornTo: Int!
     ): Author
   }
@@ -120,23 +120,14 @@ const resolvers = {
       bookSaved.author = authorObject   
       return bookSaved
     },
-    /*
-    editAuthor: (root, args) => {
-      const author = authors.find(a => a.name === args.name)
-      if(!author) {
-        return null
-      }
-      const updatedAuthor = { ...author, born: args.setBornTo }
-      authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
-      return updatedAuthor
-    } */
     updateAuthorBirthYear: async (root, args) => {
-      const authorQuery = await Author.find({ name: args.name })
-      let authorObject = authorQuery[0]
+      console.log('updateAuthorBorthYear args: ', args)
+      
+      let authorObject = await Author.findById(args.id)
       if (!authorObject) {
+        console.log('returning null')
         return null
       }
-      //const newVersion = { ...authorObject, born: args.setBornTo }
       const newVersion = authorObject
       console.log('newVersion: ', newVersion)
       newVersion.born = args.setBornTo
