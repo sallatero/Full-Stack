@@ -17,14 +17,6 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
   console.log('error connecting to MongoDB: ', error.message)
 })
 
-/*
-
-
-author: String, genre: String
-
- 
-*/
-
 const typeDefs = gql`
   type Author {
     name: String!
@@ -42,7 +34,7 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks: [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
   }
   type Mutation {
@@ -67,18 +59,18 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: async () => {
+    allBooks: async (root, args) => {
       console.log('allBooks query')
-      //let booksToReturn = books
-      /*
-      if(args.author) {
-        booksToReturn = booksToReturn.filter(b => b.author === args.author)
-      }
+      
+      //If genre specified, filter the books
+      let books = []
       if (args.genre) {
-        booksToReturn = booksToReturn.filter(b => b.genres.includes(args.genre))
-    }*/ 
-      const books = await Book.find({}).populate('author', { name: 1, born: 1, id: 1 })
-      //console.log('books in db: ', books)
+        books = await Book.find({ genres: { $in: [args.genre] }})
+         .populate('author', { name: 1, born: 1, id: 1 })
+      } else {
+        books = await Book.find({})
+         .populate('author', { name: 1, born: 1, id: 1 })
+      }
       return books
     },
     allAuthors: async () => {

@@ -12,11 +12,11 @@ const UpdateAuthorForm = (props) => {
   if (props.result.loading) {
     return <div>loading...</div>
   }
-
+  //muuta value id:ksi
   const authors = props.result.data.allAuthors
   const options = authors.map(a => {
     return { 
-     value: a.name, label: a.name }
+     value: a.id.toString(), label: a.name }
     }
   )
 
@@ -25,9 +25,9 @@ const UpdateAuthorForm = (props) => {
     console.log('updating author')
 
     const int = parseInt(born)
-
+    console.log('new year: ', int, 'selected: ', selectedOption)
     await props.updateBirthYear({
-      variables: { name: selectedOption.label, setBornTo: int }
+      variables: { id: selectedOption.value, setBornTo: int }
     })
 
     setSelectedOption(null)

@@ -15,22 +15,26 @@ const App = () => {
       allAuthors {
         name
         born
+        bookCount
         id
       }
     }
   `
-  //poistettu kenttö author
+
   const ALL_BOOKS = gql`
     {
-      allBooks {
-        title
-        author {
-          name
-          born
+      query allBooksByGenre($genre: String) {
+        allBooks(genre: $genre) {
+          title
+          author {
+            name
+            born
+            id
+          }
+          genres
+          published
           id
         }
-        published
-        id
       }
     }
   `
@@ -53,10 +57,10 @@ const App = () => {
       }
     }
   `
-  const UPDATE_AUTHOR = gql`
-    mutation editAuthor($name: String!, $setBornTo: Int!) {
-      editAuthor(
-        name: $name,
+  const UPDATE_AUTHOR_BORN = gql`
+    mutation updateAuthorBirthYear($id: String!, $setBornTo: Int!) {
+      updateAuthorBirthYear(
+        id: $id,
         setBornTo: $setBornTo
       ){
         name
@@ -70,7 +74,7 @@ const App = () => {
   const addBook = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
   })
-  const updateBirthYear = useMutation(UPDATE_AUTHOR, {
+  const updateBirthYear = useMutation(UPDATE_AUTHOR_BORN, {
     refetchQueries: [{ query: ALL_AUTHORS }]
   })
 
