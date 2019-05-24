@@ -5,13 +5,21 @@ import NewBook from './components/NewBook'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 import UpdateAuthorForm from './components/UpdateAuthorForm';
+import { onError } from 'apollo-link-error';
 
 const App = () => {
   const [page, setPage] = useState('authors')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const handleError = (error) => {
+    console.log(error)
+    setErrorMessage(error.graphQLErrors[0].message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
 
-  //poistettu kenttä bookCount
   const ALL_AUTHORS = gql`
-    {
+    query allAuthors {
       allAuthors {
         name
         born
@@ -22,19 +30,17 @@ const App = () => {
   `
 
   const ALL_BOOKS = gql`
-    {
-      query allBooksByGenre($genre: String) {
-        allBooks(genre: $genre) {
-          title
-          author {
-            name
-            born
-            id
-          }
-          genres
-          published
+    query allBooksByGenre($genre: String) {
+      allBooks(genre: $genre) {
+        title
+        author {
+          name
+          born
           id
         }
+        genres
+        published
+        id
       }
     }
   `
@@ -85,12 +91,19 @@ const App = () => {
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
       </div>
+      <div>
+        { errorMessage && 
+          <div style={{ color: 'red' }}>
+            { errorMessage }
+          </div>}
+      </div>
 
     
       <Authors result={useQuery(ALL_AUTHORS)}
         show={page === 'authors'}
       />
       <UpdateAuthorForm result={useQuery(ALL_AUTHORS)} updateBirthYear={updateBirthYear}
+        handleError={handleError}
         show={page === 'authors'}
       />
 
@@ -98,7 +111,7 @@ const App = () => {
         show={page === 'books'}
       />
 
-      <NewBook mutation={addBook}
+      <NewBook addBook={addBook} handleError={handleError}
         show={page === 'add'}
       />
 

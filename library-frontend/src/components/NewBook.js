@@ -17,12 +17,15 @@ const NewBook = (props) => {
     console.log(title, published, author, genres)
 
     const publInt = parseInt(published)
-
-    await props.mutation({
-      variables: { title: title, published: publInt, 
-        author: author, genres: genres }
-    })
-
+    try {
+      await props.addBook({
+        variables: { title: title, published: publInt, 
+          author: author, genres: genres }
+      })
+    } catch (error) {
+      console.log(error)
+      props.handleError(error)
+    }
     setTitle('')
     setPublished('')
     setAuthor('')

@@ -23,15 +23,18 @@ const UpdateAuthorForm = (props) => {
   const submit = async (e) => {
     e.preventDefault()
     console.log('updating author')
-
     const int = parseInt(born)
     console.log('new year: ', int, 'selected: ', selectedOption)
-    await props.updateBirthYear({
-      variables: { id: selectedOption.value, setBornTo: int }
-    })
-
-    setSelectedOption(null)
-    setBorn('')
+    try {
+      await props.updateBirthYear({
+        variables: { id: selectedOption.value, setBornTo: int }
+      })
+      setSelectedOption(null)
+      setBorn('')
+    } catch (error) {
+      console.log(error)
+      props.handleError(error)
+    }
   }
 
   if (props.result.loading) {
