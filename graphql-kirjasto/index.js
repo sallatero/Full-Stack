@@ -86,28 +86,30 @@ const resolvers = {
       console.log('addBook args: ', args)
 
       //If author doesn't exist in db yet, create it
-      const authorQuery = await Author.find({ name: args.author })
-      let authorObject = authorQuery[0]
-      if (!authorObject) {
-        const author = new Author({ name: args.author })
-        const authorSaved = await author.save()
-        authorObject = authorSaved
-      }
-      console.log('authorObject: ', authorObject)
-
-      //Create new book and link it to the correct author
-      const book = new Book({
-        title: args.title,
-        published: args.published,
-        genres: args.genres
-      })
-      book.author = authorObject._id
       try {
+        const authorQuery = await Author.find({ name: args.author })
+        let authorObject = authorQuery[0]
+        if (!authorObject) {
+          const author = new Author({ name: args.author })
+          const authorSaved = await author.save()
+          authorObject = authorSaved
+        }
+        console.log('authorObject: ', authorObject)
+
+        //Create new book and link it to the correct author
+        const book = new Book({
+          title: args.title,
+          published: args.published,
+          genres: args.genres
+        })
+        book.author = authorObject._id
         const bookSaved = await book.save()
+
         //Update author-field to the full object
         bookSaved.author = authorObject   
         return bookSaved
       } catch (error) {
+        console.log(error.message)
         throw new UserInputError(error.message, {
           invalidArgs: args
        }) 
