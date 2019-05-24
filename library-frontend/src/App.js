@@ -2,20 +2,41 @@ import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
-import { useQuery, useMutation } from 'react-apollo-hooks'
+import LoginForm from './components/LoginForm'
+import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
-import UpdateAuthorForm from './components/UpdateAuthorForm';
+import UpdateAuthorForm from './components/UpdateAuthorForm'
 import { onError } from 'apollo-link-error';
+
+const ErrorNotification = (props) => { 
+  if(props.errorMessage) {
+    return (
+      <div style={{ color: 'red' }}>
+        {props.errorMessage}
+      </div> 
+    )
+  }
+  return null
+}
 
 const App = () => {
   const [page, setPage] = useState('authors')
+  const [token, setToken] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const client = useApolloClient()
+
   const handleError = (error) => {
     console.log(error)
     setErrorMessage(error.graphQLErrors[0].message)
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
+  }
+
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
   }
 
   const ALL_AUTHORS = gql`
@@ -76,6 +97,16 @@ const App = () => {
       }
     }
   `
+  const LOGIN = gql`
+    mutation login($username: String!, $password: String!) {
+      login(
+        username: $username,
+        password: $password
+      ){
+        value
+      }
+    }
+  `
 
   const addBook = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
@@ -83,38 +114,53 @@ const App = () => {
   const updateBirthYear = useMutation(UPDATE_AUTHOR_BORN, {
     refetchQueries: [{ query: ALL_AUTHORS }]
   })
+  const login = useMutation(LOGIN)
+
+  const allAuthors = useQuery(ALL_AUTHORS)
+  const allBooks = useQuery(ALL_BOOKS)
 
   return (
     <div>
-      <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
+      {token 
+      ?
+      <div> 
+        <div>
+          <button onClick={() => setPage('authors')}>authors</button>
+          <button onClick={() => setPage('books')}>books</button>
+          <button onClick={() => setPage('add')}>add book</button>
+          <button onClick={() => logout()}>logout</button>
+        </div>
+        <div>
+          <ErrorNotification message={errorMessage}/>
+        </div>
+
+        <Authors result={allAuthors}
+          show={page === 'authors'}
+        />
+        <UpdateAuthorForm result={allAuthors} updateBirthYear={updateBirthYear}
+          handleError={handleError}
+          show={page === 'authors'}
+        />
+
+        <Books result={allBooks}
+          show={page === 'books'}
+        />
+
+        <NewBook addBook={addBook} handleError={handleError}
+          show={page === 'add'}
+        />
       </div>
+      :
       <div>
-        { errorMessage && 
-          <div style={{ color: 'red' }}>
-            { errorMessage }
-          </div>}
+        <ErrorNotification message={errorMessage}/>
+        <h2>Login here</h2>
+        <LoginForm 
+          login={login}
+          setToken={(token) => setToken(token)}
+          handleError={handleError}
+          />
       </div>
-
-    
-      <Authors result={useQuery(ALL_AUTHORS)}
-        show={page === 'authors'}
-      />
-      <UpdateAuthorForm result={useQuery(ALL_AUTHORS)} updateBirthYear={updateBirthYear}
-        handleError={handleError}
-        show={page === 'authors'}
-      />
-
-      <Books result={useQuery(ALL_BOOKS)}
-        show={page === 'books'}
-      />
-
-      <NewBook addBook={addBook} handleError={handleError}
-        show={page === 'add'}
-      />
-
+      }
     </div>
   )
 }
