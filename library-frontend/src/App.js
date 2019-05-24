@@ -122,62 +122,47 @@ const App = () => {
 
   return (
     <div>
-      {token 
-      ?
-      <div> 
-        <div>
-          <button onClick={() => setPage('authors')}>authors</button>
-          <button onClick={() => setPage('books')}>books</button>
-          <button onClick={() => setPage('add')}>add book</button>
-          <button onClick={() => logout()}>logout</button>
+      {token     
+      ? <div>
+        <button onClick={() => setPage('authors')}>authors</button>
+        <button onClick={() => setPage('books')}>books</button>
+        <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => logout()}>logout</button>
         </div>
-        <div>
-          <ErrorNotification message={errorMessage}/>
+      : <div>
+        <button onClick={() => setPage('authors')}>authors</button>
+        <button onClick={() => setPage('books')}>books</button>
+        <button onClick={() => setPage('login')}>login</button>
         </div>
-
-        <Authors result={allAuthors}
+      }
+      <ErrorNotification message={errorMessage}/>
+      <Authors result={allAuthors}
           show={page === 'authors'}
-        />
+      />
+      {token     
+      ? <div>
         <UpdateAuthorForm result={allAuthors} updateBirthYear={updateBirthYear}
           handleError={handleError}
           show={page === 'authors'}
-        />
-
-        <Books result={allBooks}
-          show={page === 'books'}
-        />
-
+        /></div>
+      : <div/>
+      }
+      <Books result={allBooks}
+        show={page === 'books'}
+      />
+      {token     
+      ? 
         <NewBook addBook={addBook} handleError={handleError}
           show={page === 'add'}
         />
-      </div>
       :
-      <div>
-        <div>
-          <button onClick={() => setPage('authors')}>authors</button>
-          <button onClick={() => setPage('books')}>books</button>
-          <button onClick={() => setPage('login')}>login</button>
-        </div>
-        <div>
-          <ErrorNotification message={errorMessage}/>
-        </div>
-
-        <Authors result={allAuthors}
-          show={page === 'authors'}
-        />
-
-        <Books result={allBooks}
-          show={page === 'books'}
-        />
-
         <LoginForm 
           show={page === 'login'}
           login={login}
           setToken={(token) => setToken(token)}
           handleError={handleError}
           setPage={() => setPage('authors')}
-          />
-      </div>
+        />
       }
     </div>
   )
