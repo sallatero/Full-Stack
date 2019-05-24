@@ -16,7 +16,21 @@ const NewBook = (props) => {
     console.log('add book...')
     console.log(title, published, author, genres)
 
+    if (!title) {
+      props.handleError({ message: 'Book must have a title'})
+      return
+    }
+    if (!author) {
+      props.handleError({ message: 'Book must have an author'})
+      return
+    }
+    if (!published) {
+      props.handleError({ message: 'Book must have a publishing year'})
+      return
+    }
+
     const publInt = parseInt(published)
+    console.log('pubInt', publInt)
     try {
       await props.addBook({
         variables: { title: title, published: publInt, 
@@ -31,6 +45,8 @@ const NewBook = (props) => {
     setAuthor('')
     setGenres([])
     setGenre('')
+    console.log('setting page')
+    props.setPage()
   }
 
   const addGenre = () => {

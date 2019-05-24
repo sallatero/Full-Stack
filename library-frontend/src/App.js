@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -9,10 +9,10 @@ import UpdateAuthorForm from './components/UpdateAuthorForm'
 import { onError } from 'apollo-link-error';
 
 const ErrorNotification = (props) => { 
-  if(props.errorMessage) {
+  if(props.message) {
     return (
       <div style={{ color: 'red' }}>
-        {props.errorMessage}
+        {props.message}
       </div> 
     )
   }
@@ -24,10 +24,23 @@ const App = () => {
   const [token, setToken] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
+  
+  //Initializing logged in user
+  useEffect(() => {
+    const loggedUser= window.localStorage.getItem('library-user-token')
+    console.log('logged user', loggedUser)
+    if(loggedUser) {
+      setToken(loggedUser)
+      //setToken(loggedUser.token)
+    }
+  }, [])
 
   const handleError = (error) => {
-    console.log(error)
-    setErrorMessage(error.graphQLErrors[0].message)
+    console.log('handling error', error.message)
+    setErrorMessage(error.message)
+    if (error.message.includes('not authenticated')) {
+      logout()
+    }
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
@@ -67,7 +80,7 @@ const App = () => {
     }
   `
   const CREATE_BOOK = gql`
-    mutation createBook($title: String!, $published: Int, $author: String!, $genres: [String!]!) {
+    mutation createBook($title: String!, $published: Int!, $author: String!, $genres: [String!]!) {
       addBook(
         title: $title,
         published: $published,
@@ -153,7 +166,7 @@ const App = () => {
       {token     
       ? 
         <NewBook addBook={addBook} handleError={handleError}
-          show={page === 'add'}
+          show={page === 'add'} setPage={() => setPage('books')}
         />
       :
         <LoginForm 
