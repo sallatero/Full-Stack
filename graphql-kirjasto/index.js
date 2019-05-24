@@ -51,10 +51,6 @@ const typeDefs = gql`
   }
 `
 
-/*
-root, args
-*/
-
 const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
@@ -106,28 +102,39 @@ const resolvers = {
         genres: args.genres
       })
       book.author = authorObject._id
-      const bookSaved = await book.save()
-      
-      //Update author-field to the full object
-      bookSaved.author = authorObject   
-      return bookSaved
+      try {
+        const bookSaved = await book.save()
+        //Update author-field to the full object
+        bookSaved.author = authorObject   
+        return bookSaved
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+       }) 
+      }
     },
     updateAuthorBirthYear: async (root, args) => {
       console.log('updateAuthorBorthYear args: ', args)
       
       let authorObject = await Author.findById(args.id)
       if (!authorObject) {
-        console.log('returning null')
-        return null
+        console.log('Author id not valid')
+        throw new UserInputError('author id not valid', { invalidArgs: args })
+        //return null
       }
       const newVersion = authorObject
       console.log('newVersion: ', newVersion)
       newVersion.born = args.setBornTo
       console.log('newVersion 2: ', newVersion)
-      const updatedAuthor = await Author.findByIdAndUpdate(authorObject._id, newVersion, { new: true })
-      console.log('updatedAuthor: ', updatedAuthor)
-      return updatedAuthor
-
+      try {
+        const updatedAuthor = await Author.findByIdAndUpdate(authorObject._id, newVersion, { new: true })
+        console.log('updatedAuthor: ', updatedAuthor)
+        return updatedAuthor
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+       })
+      } 
     }
   }
 }
