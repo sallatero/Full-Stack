@@ -37,6 +37,7 @@ const App = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+    setPage('authors')
   }
 
   const ALL_AUTHORS = gql`
@@ -152,12 +153,29 @@ const App = () => {
       </div>
       :
       <div>
-        <ErrorNotification message={errorMessage}/>
-        <h2>Login here</h2>
+        <div>
+          <button onClick={() => setPage('authors')}>authors</button>
+          <button onClick={() => setPage('books')}>books</button>
+          <button onClick={() => setPage('login')}>login</button>
+        </div>
+        <div>
+          <ErrorNotification message={errorMessage}/>
+        </div>
+
+        <Authors result={allAuthors}
+          show={page === 'authors'}
+        />
+
+        <Books result={allBooks}
+          show={page === 'books'}
+        />
+
         <LoginForm 
+          show={page === 'login'}
           login={login}
           setToken={(token) => setToken(token)}
           handleError={handleError}
+          setPage={() => setPage('authors')}
           />
       </div>
       }
