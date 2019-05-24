@@ -1,4 +1,4 @@
-const { ApolloServer, UserInputError, gql } = require('apollo-server')
+const { ApolloServer, UserInputError, AuthenticationError, gql } = require('apollo-server')
 const mongoose = require('mongoose')
 const Author = require('./models/author')
 const Book = require('./models/book')
@@ -105,8 +105,13 @@ const resolvers = {
     } 
   },
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
       console.log('addBook args: ', args)
+      //Check user authentication
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
 
       //If author doesn't exist in db yet, create it
       try {
@@ -138,9 +143,14 @@ const resolvers = {
        }) 
       }
     },
-    updateAuthorBirthYear: async (root, args) => {
+    updateAuthorBirthYear: async (root, args, context) => {
       console.log('updateAuthorBorthYear args: ', args)
-      
+      //Check user authentication
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
+
       let authorObject = await Author.findById(args.id)
       if (!authorObject) {
         console.log('Author id not valid')
