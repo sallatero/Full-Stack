@@ -6,7 +6,6 @@ import LoginForm from './components/LoginForm'
 import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 import UpdateAuthorForm from './components/UpdateAuthorForm'
-import { onError } from 'apollo-link-error';
 
 const ErrorNotification = (props) => { 
   if(props.message) {

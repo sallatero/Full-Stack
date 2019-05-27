@@ -1,22 +1,86 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useApolloClient } from 'react-apollo-hooks'
+import { gql } from 'apollo-boost'
+
+const ALL_BOOKS = gql`
+    query allBooks($author: String, $genre: String) {
+      allBooks(author: $author, genre: $genre) {
+        title
+        author {
+          name
+          born
+          id
+        }
+        genres
+        published
+        id
+      }
+    }
+  `
+
+const ALL_GENRES = gql`
+    query allGenres {
+      allGenres
+    }
+  `
 
 const Books = (props) => {
-  console.log('Books props: ', props)
+  const [selectedGenre, setselectedGenre] = useState('')
+  const [genres, setGenres] = useState([])
+  const [books, setBooks] = useState([])
+  const client = useApolloClient()
+
+  const fetchBooks = async () => {
+    const { data } = await client.query({
+      query: ALL_BOOKS,
+      variables: { genre: selectedGenre }
+    })
+    setBooks(data.allBooks)
+  }
+  const fetchGenres = async () => {
+    const { data } = await client.query({
+      query: ALL_GENRES
+    })
+    setGenres(data.allGenres)
+  }
+
+  //useEffect to fetch all books by selected genre
+  useEffect(() => {
+    console.log('useEffect: all books by genre ', selectedGenre)
+    fetchBooks()
+  }, [selectedGenre])
+
+  //useEffect to fetch all available genres
+  useEffect(() => {
+    console.log('useEffect: all genres')
+    fetchGenres()
+  }, [])
 
   if (!props.show) {
     return null
   }
 
-  if (props.result.loading) {
-    return <div>loading...</div>
-  }
-  console.log('props.result: ', props.result.data.allBooks)
-  const books = props.result.data.allBooks
-
   return (
     <div>
-      <h2>books</h2>
+      <h2>Books</h2>
 
+      {selectedGenre === '' 
+      ? <div><h3>Filter by genre</h3></div>
+      : <div><h3>Books in genre {selectedGenre}</h3></div>
+      }
+      {genres !== []
+      ?
+      <div><div>
+        {genres.map(g =>
+          <button key={g} onClick={() => setselectedGenre(g)}>{g}</button>
+        )}
+      </div>
+      <div>
+        <button onClick={() => setselectedGenre('')}>Show all</button></div
+      ></div>
+      :
+      <div/>
+      }
       <table>
         <tbody>
           <tr>

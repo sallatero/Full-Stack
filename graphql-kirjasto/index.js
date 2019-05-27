@@ -46,6 +46,7 @@ const typeDefs = gql`
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
+    allGenres: [String!]!
     allAuthors: [Author!]!
     me: User
   }
@@ -80,7 +81,7 @@ const resolvers = {
       
       //If genre specified, filter the books
       let books = []
-      if (args.genre) {
+      if (args.genre !== '') {
         books = await Book.find({ genres: { $in: [args.genre] }})
          .populate('author', { name: 1, born: 1, id: 1 })
       } else {
@@ -88,6 +89,12 @@ const resolvers = {
          .populate('author', { name: 1, born: 1, id: 1 })
       }
       return books
+    },
+    allGenres: async () => {
+      console.log('allGenres query')
+      const genres = await Book.distinct('genres')
+      console.log(genres)
+      return genres
     },
     allAuthors: async () => {
       console.log('allAuthors query')
