@@ -30,31 +30,36 @@ const Books = (props) => {
   const [books, setBooks] = useState([])
   const client = useApolloClient()
 
-  const fetchBooks = async () => {
-    const { data } = await client.query({
-      query: ALL_BOOKS,
-      variables: { genre: selectedGenre }
-    })
-    setBooks(data.allBooks)
-  }
-  const fetchGenres = async () => {
-    const { data } = await client.query({
-      query: ALL_GENRES
-    })
-    setGenres(data.allGenres)
-  }
+  //useEffect to fetch all available genres
+  useEffect(() => {
+    console.log('Booklist useEffect called')
+
+    const fetchGenres = async () => {
+      console.log('Booklist useEffect: fetching available genres')
+      const { data } = await client.query({
+        query: ALL_GENRES
+      })
+      setGenres(data.allGenres)
+    }
+
+    fetchGenres()
+  }, [])
 
   //useEffect to fetch all books by selected genre
   useEffect(() => {
-    console.log('useEffect: all books by genre ', selectedGenre)
+    console.log('Booklist useEffect called ')
+
+    const fetchBooks = async () => {
+      console.log('Booklist useEffect: books by selected genre ', selectedGenre)
+      const { data } = await client.query({
+        query: ALL_BOOKS,
+        variables: { genre: selectedGenre }
+      })
+      setBooks(data.allBooks)
+    }
+
     fetchBooks()
   }, [selectedGenre])
-
-  //useEffect to fetch all available genres
-  useEffect(() => {
-    console.log('useEffect: all genres')
-    fetchGenres()
-  }, [])
 
   if (!props.show) {
     return null
