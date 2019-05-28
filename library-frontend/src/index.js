@@ -21,9 +21,16 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
+const defaults = {
+  watchQuery: {
+    fetchPolicy: 'cache-and-network'
+  }
+}
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  defaultOptions: defaults
 })
 
 ReactDOM.render(

@@ -65,8 +65,8 @@ const App = () => {
   `
 
   const ALL_BOOKS = gql`
-    query allBooksByGenre($genre: String) {
-      allBooks(genre: $genre) {
+    query allBooksByGenre {
+      allBooks {
         title
         author {
           name
@@ -161,7 +161,7 @@ const App = () => {
         /></div>
       : <div/>
       }
-      <Books result={allBooks}
+      <Books
         show={page === 'books'}
       />
       {token     

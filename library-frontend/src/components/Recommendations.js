@@ -95,7 +95,6 @@ const Recommendations = (props) => {
     console.log('initialized books ', books)
   }, [user])
 
-
   if (!props.show) {
     return null
   }
