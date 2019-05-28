@@ -101,6 +101,8 @@ const resolvers = {
       return Author.find({})
     },
     me: (root, args, context) => {
+      const mina = context.currentUser
+      console.log('mina ', mina)
       return context.currentUser
     }
   },
@@ -211,7 +213,9 @@ const server = new ApolloServer({
       const decodedToken = jwt.verify(
         auth.substring(7), JWT_SECRET
       )
+      console.log('decoded token', decodedToken)
       const currentUser = await User.findById(decodedToken.id)
+      console.log('current user ', currentUser)
       return { currentUser }
     }
   }

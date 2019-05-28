@@ -3,6 +3,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
+import Recommendations from './components/Recommendations'
 import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 import UpdateAuthorForm from './components/UpdateAuthorForm'
@@ -26,7 +27,7 @@ const App = () => {
   
   //Initializing logged in user
   useEffect(() => {
-    const loggedUser= window.localStorage.getItem('library-user-token')
+    const loggedUser = window.localStorage.getItem('library-user-token')
     console.log('logged user', loggedUser)
     if(loggedUser) {
       setToken(loggedUser)
@@ -139,6 +140,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => setPage('recommendations')}>recommended</button>
         <button onClick={() => logout()}>logout</button>
         </div>
       : <div>
@@ -163,10 +165,11 @@ const App = () => {
         show={page === 'books'}
       />
       {token     
-      ? 
+      ? <div>
         <NewBook addBook={addBook} handleError={handleError}
           show={page === 'add'} setPage={() => setPage('books')}
         />
+        <Recommendations show={page === 'recommendations'}/></div>
       :
         <LoginForm 
           show={page === 'login'}
