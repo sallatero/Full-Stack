@@ -66,34 +66,35 @@ const Recommendations = (props) => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    console.log('1. effect, fetching user')
+    //console.log('1. effect, fetching user')
     async function fetchUser() {
       const { data } = await client.query({
         query: USER
       })
-      console.log('found data ', data)
+      //console.log('found data ', data)
       setUser(data.me)
     }
     fetchUser()
-    console.log('initialized user ', user)
+    //console.log('initialized user ', user)
   }, [])
 
   useEffect(() => {
-    console.log('2. effect')
+    //console.log('2. effect')
     async function fetchBooks() {
       const { data } = await client.query({
         query: ALL_BOOKS,
-        variables: { genre: user.favoriteGenre }
+        variables: { genre: user.favoriteGenre },
+        fetchPolicy: 'network-only'
       })
-      console.log('found data ', data)
+      //console.log('found data ', data)
       setBooks(data.allBooks)
     }
     if (user) {
-      console.log('user exists -> fetch books')
+      //console.log('user exists -> fetch books')
       fetchBooks()
     }
-    console.log('initialized books ', books)
-  }, [user])
+    //console.log('initialized books ', books)
+  }, [user, props.show])
 
   if (!props.show) {
     return null
