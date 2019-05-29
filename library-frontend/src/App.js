@@ -9,6 +9,7 @@ import { gql } from 'apollo-boost'
 import UpdateAuthorForm from './components/UpdateAuthorForm'
 import { Subscription } from 'react-apollo'
 import BOOK_ADDED from './graphql/subscriptions/bookAdded'
+//import AUTHOR_ADDED from './graphql/subscriptions/authorAdded'
 
 const ErrorNotification = (props) => { 
   if(props.message) {
@@ -140,7 +141,7 @@ const App = () => {
 
   const addBook = useMutation(CREATE_BOOK, {
     update: (store, response) => {
-      //After book add, add it to the store if it's not already there
+      //After book add, add it to the store if not already there
       console.log('addBok update response: ', response)
       const dataInStore = store.readQuery({ query: ALL_BOOKS })
       const addedBook = response.data.addBook
@@ -168,17 +169,45 @@ const App = () => {
         subscription={BOOK_ADDED}
         onSubscriptionData={({ subscriptionData }) => {
           const addedBook = subscriptionData.data.bookAdded
-          console.log('addedBook on 182: ', addedBook)
           window.alert(`New book ${addedBook.title} added`)
-          const dataInStore = client.readQuery({ query: ALL_BOOKS })
-          console.log('data in store at 185: ', dataInStore)
-          if (!includedIn(dataInStore.allBooks, addedBook)) {
-            const newSet = dataInStore.allBooks.concat(addedBook)
-            dataInStore.allBooks = newSet
-            console.log('new data going to store at 188: ', dataInStore)
+          const boooksInStore = client.readQuery({ query: ALL_BOOKS })
+          if (!includedIn(boooksInStore.allBooks, addedBook)) {
+            const newSet = boooksInStore.allBooks.concat(addedBook)
+            boooksInStore.allBooks = newSet
+            //console.log('new book data going to store ', boooksInStore)
             client.writeQuery({
               query: ALL_BOOKS,
-              data: dataInStore
+              data: boooksInStore
+            })
+          }
+          const author = addedBook.author
+          const authorsInStore = client.readQuery({ query: ALL_AUTHORS })
+          //Add author to store if not there already
+          if (!includedIn(authorsInStore.allAuthors, author)) {
+            author.bookCount = 1
+            const newSet = authorsInStore.allAuthors.concat(author)
+            authorsInStore.allAuthors = newSet
+            //console.log('author not in store -> writing', authorsInStore)
+            client.writeQuery({
+              query: ALL_AUTHORS,
+              data: authorsInStore
+            })
+          } else {
+            //Update author's book count
+            const newSet = authorsInStore.allAuthors.map(a => {
+              if (a.id === author.id) {
+                const temp = { ...a }
+                temp.bookCount = a.bookCount + 1
+                return temp   
+              } else {
+                return a
+              }
+            })
+            authorsInStore.allAuthors = newSet
+            //console.log('writing to store, new set', authorsInStore)
+            client.writeQuery({
+              query: ALL_AUTHORS,
+              data: authorsInStore
             })
           }
         }}>

@@ -93,7 +93,7 @@ const resolvers = {
         books = await Book.find({})
          .populate('author', { name: 1, born: 1, id: 1 })
       }
-      console.log(books)
+      //console.log(books)
       return books
     },
     allGenres: async () => {
@@ -151,7 +151,7 @@ const resolvers = {
         //Update author-field to the full object
         bookSaved.author = authorObject
         console.log('bookSaved: ', bookSaved)
-        //Publish new addition
+        //Publish new book addition
         pubSub.publish('BOOK_ADDED', { bookAdded: bookSaved })
         return bookSaved
       } catch (error) {
