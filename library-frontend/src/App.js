@@ -8,29 +8,7 @@ import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 import UpdateAuthorForm from './components/UpdateAuthorForm'
 import { Subscription } from 'react-apollo'
-
-const BOOK_DETAILS = gql`
-  fragment BookDetails on Book {
-    id
-    title
-    author {
-      name
-      born
-      id
-    }
-    published
-    genres
-  }
-`
-
-const BOOK_ADDED = gql`
-  subscription {
-    bookAdded {
-      ...BookDetails
-    }
-  }
-  ${BOOK_DETAILS}
-`
+import BOOK_ADDED from './graphql/subscriptions/bookAdded'
 
 const ErrorNotification = (props) => { 
   if(props.message) {
@@ -160,8 +138,6 @@ const App = () => {
     return bool
   }
 
-
-  //refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   const addBook = useMutation(CREATE_BOOK, {
     update: (store, response) => {
       //After book add, add it to the store if it's not already there
