@@ -7,6 +7,30 @@ import Recommendations from './components/Recommendations'
 import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 import UpdateAuthorForm from './components/UpdateAuthorForm'
+import { Subscription } from 'react-apollo'
+
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    id
+    title
+    author {
+      name
+      born
+      id
+    }
+    published
+    genres
+  }
+`
+
+const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
+`
 
 const ErrorNotification = (props) => { 
   if(props.message) {
@@ -94,6 +118,7 @@ const App = () => {
         author {
           name
           born
+          id
         }
       }
     }
@@ -122,8 +147,36 @@ const App = () => {
     }
   `
 
+  const includedIn = (set, object) => {
+    console.log('included in?: ', set, object)
+    console.log('set length: ', set.length)
+    const setIds = set.map(p => {
+      console.log('mapissa: ', p.id)
+      return p.id
+    })
+    console.log('set ids: ', setIds)
+    const bool = setIds.includes(object.id)
+    console.log('boolean: ', bool)
+    return bool
+  }
+
+
+  //refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   const addBook = useMutation(CREATE_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
+    update: (store, response) => {
+      //After book add, add it to the store if it's not already there
+      console.log('addBok update response: ', response)
+      const dataInStore = store.readQuery({ query: ALL_BOOKS })
+      const addedBook = response.data.addBook
+      console.log('addedBook: ', addedBook)
+      if (!includedIn(dataInStore.allBooks, addedBook)) {
+        dataInStore.allBooks.push(addedBook)
+        client.writeQuery({
+          query: ALL_BOOKS,
+          data: dataInStore
+        })
+      }
+    }
   })
   const updateBirthYear = useMutation(UPDATE_AUTHOR_BORN, {
     refetchQueries: [{ query: ALL_AUTHORS }]
@@ -135,6 +188,26 @@ const App = () => {
 
   return (
     <div>
+      <Subscription
+        subscription={BOOK_ADDED}
+        onSubscriptionData={({ subscriptionData }) => {
+          const addedBook = subscriptionData.data.bookAdded
+          console.log('addedBook on 182: ', addedBook)
+          window.alert(`New book ${addedBook.title} added`)
+          const dataInStore = client.readQuery({ query: ALL_BOOKS })
+          console.log('data in store at 185: ', dataInStore)
+          if (!includedIn(dataInStore.allBooks, addedBook)) {
+            const newSet = dataInStore.allBooks.concat(addedBook)
+            dataInStore.allBooks = newSet
+            console.log('new data going to store at 188: ', dataInStore)
+            client.writeQuery({
+              query: ALL_BOOKS,
+              data: dataInStore
+            })
+          }
+        }}>
+        {() => null}
+        </Subscription>
       {token     
       ? <div>
         <button onClick={() => setPage('authors')}>authors</button>
@@ -161,7 +234,7 @@ const App = () => {
         /></div>
       : <div/>
       }
-      <Books
+      <Books result={allBooks}
         show={page === 'books'}
       />
       {token     
