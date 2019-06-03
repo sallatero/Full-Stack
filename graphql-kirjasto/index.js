@@ -79,17 +79,21 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    bookCount: () => Book.collection.countDocuments(),
-    authorCount: () => Author.collection.countDocuments(),
+    bookCount: () => {
+      return Book.collection.countDocuments()
+    },
+    authorCount: () => {
+      return Author.collection.countDocuments()
+    },
     allBooks: async (root, args) => {
-      console.log('allBooks query')
-      
       //If genre specified, filter the books
       let books = []
       if (args.genre !== '') {
+        console.log('allBooks: Book.find')
         books = await Book.find({ genres: { $in: [args.genre] }})
          .populate('author', { name: 1, born: 1, id: 1 })
       } else {
+        console.log('allBooks: Book.find')
         books = await Book.find({})
          .populate('author', { name: 1, born: 1, id: 1 })
       }
@@ -97,31 +101,45 @@ const resolvers = {
       return books
     },
     allGenres: async () => {
-      console.log('allGenres query')
+      console.log('allGenres: Book.distinct')
       const genres = await Book.distinct('genres')
-      console.log(genres)
+      //console.log(genres)
       return genres
     },
     allAuthors: async () => {
-      console.log('allAuthors query')
-      return Author.find({})
+      //Fetch all authors
+      console.log('allAuthors: Author.find')
+      const authorList = await Author.find({})
+      //Fetch all books
+      console.log('allAuthors: Book.find')
+      const bookList = await Book.find({})
+      const mappedBooks = bookList.map(b => {
+        let bo = b._doc
+        return bo
+      })
+      //Go throug all authors and update their bookCount
+      const mappedAuthors = authorList.map(a => {
+        let aut = a._doc
+        aut.id = aut._id
+        delete aut._id
+        delete aut.__v
+        const books = mappedBooks.filter(b => b.author.toString() === aut.id.toString())
+        aut.bookCount = books.length
+        //console.log('author: ', aut)
+        //console.log('books: ', books)
+        return aut
+      })
+      return mappedAuthors
     },
     me: (root, args, context) => {
       const mina = context.currentUser
-      console.log('mina ', mina)
+      //console.log('mina ', mina)
       return context.currentUser
     }
   },
-  Author: {
-    bookCount: async (root) => {
-      //const authorsBooks = books.filter(b => b.author === root.name)
-      const authorsBooks = await Book.find({ author: root._id })
-      return authorsBooks.length
-    } 
-  },
   Mutation: {
     addBook: async (root, args, context) => {
-      console.log('addBook args: ', args)
+      //console.log('addBook args: ', args)
       //Check user authentication
       const currentUser = context.currentUser
       if (!currentUser) {
@@ -137,7 +155,7 @@ const resolvers = {
           const authorSaved = await author.save()
           authorObject = authorSaved
         }
-        console.log('authorObject: ', authorObject)
+        //console.log('authorObject: ', authorObject)
 
         //Create new book and link it to the correct author
         const book = new Book({
@@ -150,7 +168,7 @@ const resolvers = {
 
         //Update author-field to the full object
         bookSaved.author = authorObject
-        console.log('bookSaved: ', bookSaved)
+        //console.log('bookSaved: ', bookSaved)
         //Publish new book addition
         pubSub.publish('BOOK_ADDED', { bookAdded: bookSaved })
         return bookSaved
@@ -162,7 +180,7 @@ const resolvers = {
       }
     },
     updateAuthorBirthYear: async (root, args, context) => {
-      console.log('updateAuthorBorthYear args: ', args)
+      //console.log('updateAuthorBorthYear args: ', args)
       //Check user authentication
       const currentUser = context.currentUser
       if (!currentUser) {
@@ -176,12 +194,12 @@ const resolvers = {
         //return null
       }
       const newVersion = authorObject
-      console.log('newVersion: ', newVersion)
+      //console.log('newVersion: ', newVersion)
       newVersion.born = args.setBornTo
-      console.log('newVersion 2: ', newVersion)
+      //console.log('newVersion 2: ', newVersion)
       try {
         const updatedAuthor = await Author.findByIdAndUpdate(authorObject._id, newVersion, { new: true })
-        console.log('updatedAuthor: ', updatedAuthor)
+        //console.log('updatedAuthor: ', updatedAuthor)
         return updatedAuthor
       } catch (error) {
         throw new UserInputError(error.message, {
@@ -227,9 +245,9 @@ const server = new ApolloServer({
       const decodedToken = jwt.verify(
         auth.substring(7), JWT_SECRET
       )
-      console.log('decoded token', decodedToken)
+      //console.log('decoded token', decodedToken)
       const currentUser = await User.findById(decodedToken.id)
-      console.log('current user ', currentUser)
+      //console.log('current user ', currentUser)
       return { currentUser }
     }
   }
