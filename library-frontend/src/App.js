@@ -5,12 +5,14 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
 import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
-import { gql } from 'apollo-boost'
 import UpdateAuthorForm from './components/UpdateAuthorForm'
 import { Subscription } from 'react-apollo'
 import BOOK_ADDED from './graphql/subscriptions/bookAdded'
 import UPDATE_AUTHOR_BORN from './graphql/mutations/updateAuthorBorn'
-//import AUTHOR_ADDED from './graphql/subscriptions/authorAdded'
+import CREATE_BOOK from './graphql/mutations/createBook'
+import LOGIN from './graphql/mutations/login'
+import ALL_BOOKS from './graphql/queries/allBooks'
+import ALL_AUTHORS from './graphql/queries/allAuthors'
 
 const ErrorNotification = (props) => { 
   if(props.message) {
@@ -56,64 +58,6 @@ const App = () => {
     client.resetStore()
     setPage('authors')
   }
-
-  const ALL_AUTHORS = gql`
-    query allAuthors {
-      allAuthors {
-        name
-        born
-        bookCount
-        id
-      }
-    }
-  `
-
-  const ALL_BOOKS = gql`
-    query allBooksByGenre {
-      allBooks {
-        title
-        author {
-          name
-          born
-          id
-        }
-        genres
-        published
-        id
-      }
-    }
-  `
-  const CREATE_BOOK = gql`
-    mutation createBook($title: String!, $published: Int!, $author: String!, $genres: [String!]!) {
-      addBook(
-        title: $title,
-        published: $published,
-        author: $author,
-        genres: $genres
-      ){
-        title
-        published
-        genres
-        id
-        author {
-          name
-          born
-          id
-        }
-      }
-    }
-  `
-  
-  const LOGIN = gql`
-    mutation login($username: String!, $password: String!) {
-      login(
-        username: $username,
-        password: $password
-      ){
-        value
-      }
-    }
-  `
 
   const includedIn = (set, object) => {
     console.log('included in?: ', set, object)
