@@ -9,6 +9,7 @@ import { gql } from 'apollo-boost'
 import UpdateAuthorForm from './components/UpdateAuthorForm'
 import { Subscription } from 'react-apollo'
 import BOOK_ADDED from './graphql/subscriptions/bookAdded'
+import UPDATE_AUTHOR_BORN from './graphql/mutations/updateAuthorBorn'
 //import AUTHOR_ADDED from './graphql/subscriptions/authorAdded'
 
 const ErrorNotification = (props) => { 
@@ -102,19 +103,7 @@ const App = () => {
       }
     }
   `
-  const UPDATE_AUTHOR_BORN = gql`
-    mutation updateAuthorBirthYear($id: String!, $setBornTo: Int!) {
-      updateAuthorBirthYear(
-        id: $id,
-        setBornTo: $setBornTo
-      ){
-        name
-        born
-        id
-        bookCount
-      }
-    }
-  `
+  
   const LOGIN = gql`
     mutation login($username: String!, $password: String!) {
       login(

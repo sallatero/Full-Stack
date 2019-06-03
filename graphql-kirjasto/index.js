@@ -65,6 +65,7 @@ const typeDefs = gql`
     updateAuthorBirthYear(
       id: String!
       setBornTo: Int!
+      bookCount: Int!
     ): Author
     createUser(
       username: String!
@@ -180,7 +181,7 @@ const resolvers = {
       }
     },
     updateAuthorBirthYear: async (root, args, context) => {
-      //console.log('updateAuthorBorthYear args: ', args)
+      console.log('updateAuthorBorthYear args: ', args)
       //Check user authentication
       const currentUser = context.currentUser
       if (!currentUser) {
@@ -194,12 +195,13 @@ const resolvers = {
         //return null
       }
       const newVersion = authorObject
-      //console.log('newVersion: ', newVersion)
+      console.log('newVersion: ', newVersion)
       newVersion.born = args.setBornTo
-      //console.log('newVersion 2: ', newVersion)
+      console.log('newVersion 2: ', newVersion)
       try {
         const updatedAuthor = await Author.findByIdAndUpdate(authorObject._id, newVersion, { new: true })
-        //console.log('updatedAuthor: ', updatedAuthor)
+        updatedAuthor.bookCount = args.bookCount
+        console.log('updatedAuthor: ', updatedAuthor)
         return updatedAuthor
       } catch (error) {
         throw new UserInputError(error.message, {
