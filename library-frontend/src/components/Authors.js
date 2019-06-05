@@ -1,23 +1,30 @@
-import React, { useState } from 'react'
-import { gql } from 'apollo-boost'
+import React from 'react'
 import { useApolloClient } from 'react-apollo-hooks'
+import { Container, Header, Image, Segment, Dimmer, Loader } from 'semantic-ui-react'
 
 const Authors = (props) => {
   //console.log('Authors props: ', props)
-  const client = useApolloClient()
+  //const client = useApolloClient()
 
   if (!props.show) {
     return null
   }
 
   if (props.result.loading) {
-    return <div>loading...</div>
+    return (
+      <Segment>
+        <Dimmer active inverted>
+          <Loader inverted content='Loading'/>
+        </Dimmer>
+        <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png'/>
+      </Segment>
+    )
   }
 
   const authors = props.result.data.allAuthors
   return (
-    <div>
-      <h2>Authors</h2>
+    <Container text>
+      <Header size='large'>Authors</Header>
       <table>
         <tbody>
           <tr>
@@ -38,7 +45,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-    </div>
+    </Container>
   )
 }
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
+import { Container, Header, Button, Label, Menu } from 'semantic-ui-react'
+import _ from 'lodash'
 
 const ALL_BOOKS = gql`
     query allBooks($author: String, $genre: String) {
@@ -67,27 +69,56 @@ const Books = (props) => {
     return null
   }
 
-  return (
-    <div>
-      <h2>Books</h2>
+  const renderGenre = (genre) => {
+    let color = ''
+    let disabled = false
+    if (selectedGenre === genre) {
+      color = 'teal'
+      disabled = true
+    }
+    return (
+      <Button color={color} size='small' disabled={disabled}
+        onClick={() => setselectedGenre(genre)} >
+        {genre === '' 
+          ? 'Show all'
+          : _.capitalize(genre)
+          }
+      </Button>
+    )
+  }
 
-      {selectedGenre === '' 
-      ? <div><h3>Filter by genre</h3></div>
-      : <div><h3>Books in genre {selectedGenre}</h3></div>
-      }
-      {genres !== []
-      ?
-      <div><div>
-        {genres.map(g =>
-          <button key={g} onClick={() => setselectedGenre(g)}>{g}</button>
-        )}
-      </div>
+  const renderFilters = () => {
+    console.log('active: ', selectedGenre)
+    let subheader = 'Filter by genre'
+    if (selectedGenre !== '') {
+      subheader = `Books in genre ${selectedGenre}`
+    } 
+
+    return (
       <div>
-        <button onClick={() => setselectedGenre('')}>Show all</button></div
-      ></div>
-      :
-      <div/>
-      }
+      <Header size='medium' color='teal' >{subheader}</Header>
+      {genres !== [] ?
+        <div>
+        <Label.Group>
+          {genres.map(g => renderGenre(g))}
+        </Label.Group>
+        <Label.Group>
+          {renderGenre('')}
+        </Label.Group>
+        </div>
+      : <div/> }
+      </div>
+    )
+  }
+
+  
+
+  return (
+    <Container text>
+      <Header size='large' color='teal'>Books</Header>
+     
+      {renderFilters()}
+      
       <table>
         <tbody>
           <tr>
@@ -108,7 +139,7 @@ const Books = (props) => {
           )}
         </tbody>
       </table>
-    </div>
+    </Container>
   )
 }
 

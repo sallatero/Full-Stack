@@ -1,5 +1,23 @@
 import { gql } from 'apollo-boost'
 
+const ALL_BOOKS = gql`
+ query allBooks($author: String, $genre: String) {
+  allBooks(author: $author, genre: $genre) {
+     title
+     author {
+       name
+       born
+       id
+     }
+     genres
+     published
+     id
+   }
+ }
+`
+
+
+    /*
  const ALL_BOOKS = gql`
  query allBooksByGenre {
    allBooks {
@@ -15,5 +33,5 @@ import { gql } from 'apollo-boost'
    }
  }
 `
-
+*/
 export default ALL_BOOKS

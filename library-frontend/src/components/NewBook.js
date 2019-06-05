@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { Container, Header, Button, Form, 
+  FormField, Label, Icon, Segment } from 'semantic-ui-react'
+import _ from 'lodash'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -56,44 +59,58 @@ const NewBook = (props) => {
     setGenre('')
   }
 
+  const removeGenre = (genre) => {
+    console.log('removing genre ', genre)
+    const newArray = genres.filter(g => g !== genre)
+    setGenres(newArray)
+    setGenre('')
+    console.log('genres after removal ', newArray)
+  }
+
   return (
-    <div>
-      <form onSubmit={submit}>
-        <div>
-          title
-          <input
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-          />
-        </div>
-        <div>
-          author
-          <input
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          published
-          <input
-            type='number'
-            value={published}
-            onChange={({ target }) => setPublished(target.value)}
-          />
-        </div>
-        <div>
-          <input
-            value={genre}
-            onChange={({ target }) => setGenre(target.value)}
-          />
-          <button onClick={addGenre} type="button">add genre</button>
-        </div>
-        <div>
-          genres: {genres.join(' ')}
-        </div>
-        <button type='submit'>create book</button>
-      </form>
-    </div>
+    <Container text>
+      <Header size='large' color='teal'>Give book details</Header>
+      <Segment inverted tertiary>
+      <Form inverted onSubmit={submit}>
+        <FormField>
+          <label>Title</label>
+          <input type='text' value={title} placeholder='Title of book' 
+            onChange={({ target }) => setTitle(target.value)}/>
+        </FormField>
+        <FormField>
+          <label>Author</label>
+          <input type='text' value={author} placeholder='Author of book' 
+            onChange={({ target }) => setAuthor(target.value)}/>
+        </FormField>
+        <FormField>
+          <label>Published</label>
+          <input type='number' value={published} placeholder='Publishing year of book' 
+            onChange={({ target }) => setPublished(target.value)}/>
+        </FormField>
+        <FormField>
+          <label>Genre</label>
+          <Form.Group inline>
+            <FormField>
+              <input type='text' value={genre} placeholder='Genre of book' 
+                onChange={({ target }) => setGenre(target.value)}/>
+            </FormField>
+            <Button onClick={addGenre} type='button'>add genre</Button>
+          </Form.Group>
+          <Label.Group color='teal'>
+            <div>
+              {genres.map(g => (
+                <Label key={g} as='a' onClick={() => removeGenre(g)} size='large' horizontal>
+                  {_.capitalize(g)}
+                  <Icon name='close'/>
+                </Label>
+              ))}
+            </div>
+          </Label.Group>
+        </FormField>
+        <Button type='submit'>Submit</Button>
+      </Form>
+      </Segment>
+    </Container>
   )
 }
 

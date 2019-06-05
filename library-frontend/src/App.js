@@ -13,6 +13,7 @@ import CREATE_BOOK from './graphql/mutations/createBook'
 import LOGIN from './graphql/mutations/login'
 import ALL_BOOKS from './graphql/queries/allBooks'
 import ALL_AUTHORS from './graphql/queries/allAuthors'
+import { Container, Menu } from 'semantic-ui-react'
 
 const ErrorNotification = (props) => { 
   if(props.message) {
@@ -97,7 +98,7 @@ const App = () => {
   const allBooks = useQuery(ALL_BOOKS)
 
   return (
-    <div>
+    <Container>
       <Subscription
         subscription={BOOK_ADDED}
         onSubscriptionData={({ subscriptionData }) => {
@@ -147,13 +148,22 @@ const App = () => {
         {() => null}
         </Subscription>
       {token     
-      ? <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
-        <button onClick={() => setPage('recommendations')}>recommended</button>
-        <button onClick={() => logout()}>logout</button>
-        </div>
+      ? 
+        <Menu secondary>
+        <Menu.Item name='authors' active={page === 'authors'} 
+          onClick={() => setPage('authors')}/>
+        <Menu.Item name='books' active={page === 'books'} 
+          onClick={() => setPage('books')}/>
+        <Menu.Item name='add book' active={page === 'add'} 
+          onClick={() => setPage('add')}/>
+        <Menu.Item name='recommendations' active={page === 'recommendations'} 
+          onClick={() => setPage('recommendations')}/>
+        <Menu.Menu position='right'>
+          <Menu.Item name='logout' active={false}
+            onClick={() => logout()}/>
+        </Menu.Menu>
+        </Menu>
+
       : <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
@@ -190,7 +200,7 @@ const App = () => {
           setPage={() => setPage('authors')}
         />
       }
-    </div>
+    </Container>
   )
 }
 
