@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
-import { Container, Header, Button, Label, Menu } from 'semantic-ui-react'
+import { Container, Header, Button, Label, Menu, Segment } from 'semantic-ui-react'
 import _ from 'lodash'
 import '../index.css'
 
@@ -72,19 +72,17 @@ const Books = (props) => {
 
   const renderGenre = (genre) => {
     let color = ''
-    let disabled = false
     if (selectedGenre === genre) {
       color = 'teal'
-      disabled = true
     }
     return (
-      <Button key={genre} color={color} compact size='small' disabled={disabled}
+      <Label key={genre} as='a' color={color} compact='true' size='small'
         onClick={() => setselectedGenre(genre)} >
         {genre === '' 
           ? 'Show all'
           : _.capitalize(genre)
           }
-      </Button>
+      </Label>
     )
   }
 
@@ -123,30 +121,38 @@ const Books = (props) => {
 
   return (
     <Container text>
-      <Header size='large' color='teal'>Books</Header>
-     
-      {renderFilters()}
-      
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>
-              author
-            </th>
-            <th>
-              published
-            </th>
-          </tr>
-          {books.map(b =>
-            <tr key={b.id}>
-              <td>{b.title}</td>
-              <td>{b.author.name}</td>
-              <td>{b.published}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <Segment.Group>
+        <Segment padded>
+          <Header size='large' color='teal'>Books</Header>
+        </Segment>
+        <Segment.Group>
+          <Segment padded>
+            {renderFilters()}
+          </Segment>
+          <Segment padded>
+            <table>
+              <tbody>
+                <tr>
+                  <th></th>
+                  <th>
+                    author
+                  </th>
+                  <th>
+                    published
+                  </th>
+                </tr>
+                {books.map(b =>
+                  <tr key={b.id}>
+                    <td>{b.title}</td>
+                    <td>{b.author.name}</td>
+                    <td>{b.published}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+            </Segment>
+          </Segment.Group>
+      </Segment.Group>
     </Container>
   )
 }

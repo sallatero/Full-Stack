@@ -69,47 +69,53 @@ const NewBook = (props) => {
 
   return (
     <Container text>
-      <Header size='large' color='teal'>Give book details</Header>
-      <Segment inverted tertiary>
-      <Form inverted onSubmit={submit}>
-        <FormField>
-          <label>Title</label>
-          <input type='text' value={title} placeholder='Title of book' 
-            onChange={({ target }) => setTitle(target.value)}/>
-        </FormField>
-        <FormField>
-          <label>Author</label>
-          <input type='text' value={author} placeholder='Author of book' 
-            onChange={({ target }) => setAuthor(target.value)}/>
-        </FormField>
-        <FormField>
-          <label>Published</label>
-          <input type='number' value={published} placeholder='Publishing year of book' 
-            onChange={({ target }) => setPublished(target.value)}/>
-        </FormField>
-        <FormField>
-          <label>Genre</label>
-          <Form.Group inline>
-            <FormField>
-              <input type='text' value={genre} placeholder='Genre of book' 
-                onChange={({ target }) => setGenre(target.value)}/>
-            </FormField>
-            <Button onClick={addGenre} type='button'>add genre</Button>
-          </Form.Group>
-          <Label.Group color='teal'>
-            <div>
-              {genres.map(g => (
-                <Label key={g} as='a' onClick={() => removeGenre(g)} size='large' horizontal>
-                  {_.capitalize(g)}
-                  <Icon name='close'/>
-                </Label>
-              ))}
-            </div>
-          </Label.Group>
-        </FormField>
-        <Button type='submit'>Submit</Button>
-      </Form>
+      <Segment.Group>
+        <Segment padded>
+          <Header size='large' color='teal'>Give book details</Header>
+        </Segment>
+        <Segment.Group>
+          <Segment padded stacked>
+            <Form onSubmit={submit}>
+              <FormField fluid='true'>
+                <label>Title</label>
+                <input type='text' value={title} placeholder='Title of book' 
+                  onChange={({ target }) => setTitle(target.value)}/>
+              </FormField>
+              <FormField fluid='true'>
+                <label>Author</label>
+                <input type='text' value={author} placeholder='Author of book' 
+                  onChange={({ target }) => setAuthor(target.value)}/>
+              </FormField> 
+              <FormField fluid='true'>
+                <label>Published</label>
+                <input type='number' value={published} placeholder='Publishing year of book' 
+                  onChange={({ target }) => setPublished(target.value)}/>
+              </FormField>
+              <FormField fluid='true'>
+                <label>Genre</label>
+                <Form.Group inline>
+                  <FormField fluid='true'>
+                    <input type='text' value={genre} placeholder='Genre of book' 
+                      onChange={({ target }) => setGenre(target.value)}/>
+                  </FormField>
+                  <Button onClick={addGenre} size='small' type='button'>add genre</Button>
+                </Form.Group>
+                <Label.Group color='teal'>
+                  <div className='genres to add'>
+                    {genres.map(g => (
+                      <Label key={g} as='a' onClick={() => removeGenre(g)} size='large'>
+                        {_.capitalize(g)}
+                        <Icon name='close'/>
+                      </Label>
+                    ))}
+                  </div>
+                </Label.Group>
+              </FormField>
+              <Button fluid color='teal' type='submit'>Submit</Button>
+            </Form>
       </Segment>
+      </Segment.Group>
+      </Segment.Group>
     </Container>
   )
 }
