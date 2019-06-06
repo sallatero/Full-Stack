@@ -3,6 +3,7 @@ import { useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 import { Container, Header, Button, Label, Menu } from 'semantic-ui-react'
 import _ from 'lodash'
+import '../index.css'
 
 const ALL_BOOKS = gql`
     query allBooks($author: String, $genre: String) {
@@ -77,7 +78,7 @@ const Books = (props) => {
       disabled = true
     }
     return (
-      <Button color={color} size='small' disabled={disabled}
+      <Button key={genre} color={color} compact size='small' disabled={disabled}
         onClick={() => setselectedGenre(genre)} >
         {genre === '' 
           ? 'Show all'
@@ -87,24 +88,31 @@ const Books = (props) => {
     )
   }
 
-  const renderFilters = () => {
-    console.log('active: ', selectedGenre)
-    let subheader = 'Filter by genre'
-    if (selectedGenre !== '') {
-      subheader = `Books in genre ${selectedGenre}`
-    } 
-
+  const renderSubheader = () => { 
     return (
       <div>
-      <Header size='medium' color='teal' >{subheader}</Header>
+        {selectedGenre === ''
+        ? 'Filter by genre'
+        : <div>Books in genre <i>{selectedGenre}</i></div>
+        }
+      </div>
+    )
+  }
+
+  const renderFilters = () => {
+    return (
+      <div>
+      <Header size='medium' color='teal' >
+        {renderSubheader()}
+      </Header>
       {genres !== [] ?
-        <div>
-        <Label.Group>
-          {genres.map(g => renderGenre(g))}
-        </Label.Group>
-        <Label.Group>
-          {renderGenre('')}
-        </Label.Group>
+        <div className='genre filters'>
+          <Label.Group>
+            {renderGenre('')}
+          </Label.Group>
+          <Label.Group>
+            {genres.map(g => renderGenre(g))}
+          </Label.Group> 
         </div>
       : <div/> }
       </div>
