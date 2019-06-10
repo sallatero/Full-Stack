@@ -1,8 +1,13 @@
-This is the frontend to a library app, where user can see a list of authors and books (with ability to filter by genre). Logged in user can in addition add new books and update author birth years. A logged in user also gets a page that lists all books in his/her favorite genre.
+<h2> Library app </h2>
+<p>This folder holds the frontend to a library app, where users can see a list of authors and books (with ability to filter by genre). Logged in user can in addition add new books and update author birth years. A logged in user also gets a page that lists all books in his/her favorite genre.</p>
+<h3>Technologies, languages and libraries used in this project </h3>
+<ul><li>React and JavaScript</li>
+<li>GraphQL and Apollo</li>
+<li>Semantic UI React</li></ul>
 
-Test login is
-username: 
-password:
+<h3> You can test it with these test credentials </h3>
+<ul><li>username: salla</li>
+<li>password: secret</li></ul>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
