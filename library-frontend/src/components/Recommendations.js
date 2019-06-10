@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
+import { Container, Header, Table, Segment } from 'semantic-ui-react'
 
 const ALL_BOOKS = gql`
     query allBooks($author: String, $genre: String) {
@@ -26,39 +27,6 @@ const USER = gql`
     }
   }
 `
-
-/*
-  const fetchUser = async () => {
-    console.log('fetching user')
-    const { data } = await client.query({
-      query: USER
-    })
-    console.log('data ', data)
-    return data.me
-    //setUser(data.me)
-    //console.log('user ', data.me)
-  } */
-
-  /*
-  const fetchBooks = async () => {
-    console.log('fetching books')
-    const { data } = await client.query({
-      query: ALL_BOOKS,
-      variables: { genre: user.favoriteGenre }
-    })
-    setBooks(data.allBooks)
-  } */
-
-//useEffect to fetch current user and books by user's favorite genre
-
-  /*
-  useEffect(() => {
-    const usr = fetchUser()
-    console.log('usr ', usr) //Promise pending
-    setUser(usr)
-    fetchBooks()
-    console.log('after fetching user ', user)
-  }, []) */
 
 const Recommendations = (props) => {
   const [books, setBooks] = useState([])
@@ -101,30 +69,36 @@ const Recommendations = (props) => {
   }
 
   return (
-    <div>
-      <h2>Recommended for you</h2>
-      <h3>Books in your favorite genre {user.favoriteGenre}</h3>
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>
-              author
-            </th>
-            <th>
-              published
-            </th>
-          </tr>
-          {books.map(b =>
-            <tr key={b.id}>
-              <td>{b.title}</td>
-              <td>{b.author.name}</td>
-              <td>{b.published}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+    <Container text>
+      <Segment.Group>
+        <Segment padded>
+          <Header size='large' color='teal'>Recommended for you</Header>
+        </Segment>
+        <Segment.Group>
+          <Segment padded>
+            <Header size='medium' color='teal'>Books in your favorite genre <i>{user.favoriteGenre}</i></Header>
+            <Table color='teal' compact>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Title</Table.HeaderCell>
+                  <Table.HeaderCell>Author</Table.HeaderCell>
+                  <Table.HeaderCell>Published</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {books.map(b =>
+                  <Table.Row key={b.id}>
+                    <Table.Cell>{b.title}</Table.Cell>
+                    <Table.Cell>{b.author.name}</Table.Cell>
+                    <Table.Cell>{b.published}</Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
+          </Segment>
+        </Segment.Group>
+      </Segment.Group>
+    </Container>
   )
 }
 

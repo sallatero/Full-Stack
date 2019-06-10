@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
-import { Container, Header, Button, Label, Menu, Segment } from 'semantic-ui-react'
+import { Container, Header, Table, Label, Segment } from 'semantic-ui-react'
 import _ from 'lodash'
 import '../index.css'
 
@@ -117,8 +117,6 @@ const Books = (props) => {
     )
   }
 
-  
-
   return (
     <Container text>
       <Segment.Group>
@@ -126,30 +124,28 @@ const Books = (props) => {
           <Header size='large' color='teal'>Books</Header>
         </Segment>
         <Segment.Group>
-          <Segment padded>
+          <Segment padded className='books list section break'>
             {renderFilters()}
           </Segment>
           <Segment padded>
-            <table>
-              <tbody>
-                <tr>
-                  <th></th>
-                  <th>
-                    author
-                  </th>
-                  <th>
-                    published
-                  </th>
-                </tr>
+            <Table color='teal' compact>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Title</Table.HeaderCell>
+                  <Table.HeaderCell>Author</Table.HeaderCell>
+                  <Table.HeaderCell>Published</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
                 {books.map(b =>
-                  <tr key={b.id}>
-                    <td>{b.title}</td>
-                    <td>{b.author.name}</td>
-                    <td>{b.published}</td>
-                  </tr>
+                  <Table.Row key={b.id}>
+                    <Table.Cell>{b.title}</Table.Cell>
+                    <Table.Cell>{b.author.name}</Table.Cell>
+                    <Table.Cell>{b.published}</Table.Cell>
+                  </Table.Row>
                 )}
-              </tbody>
-            </table>
+              </Table.Body>
+            </Table>
             </Segment>
           </Segment.Group>
       </Segment.Group>

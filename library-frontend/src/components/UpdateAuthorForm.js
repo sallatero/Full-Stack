@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import Select from 'react-select'
+import { Form, Header, FormField, Loader, Button } from 'semantic-ui-react'
 
 const UpdateAuthorForm = (props) => {
   const [born, setBorn] = useState('')
   const [selectedOption, setSelectedOption] = useState(null)
-  
-  if (!props.show) {
-    return null
-  }
 
   if (props.result.loading) {
-    return <div>loading...</div>
+    return (
+      <Loader active inline='centered' />
+    )
   }
   console.log('FORM props: ', props.result.data)
   //muuta value id:ksi
@@ -43,30 +42,30 @@ const UpdateAuthorForm = (props) => {
   }
 
   if (props.result.loading) {
-    return <div>loading...</div>
+    return (
+      <Loader active inline='centered' />
+    )
   }
 
   return (
     <div>
-      <h2>Set birth year</h2>
-      <form onSubmit={submit}>
-        <div>
+      <Header size='medium' color='teal'>Set birth year</Header>
+      <Form onSubmit={submit}>
+        <FormField fluid='true'>
+          <label>Author</label>
           <Select 
             value={selectedOption}
             onChange={(selectedOption) => setSelectedOption(selectedOption)} 
             options={options}
           />
-        </div>
-        <div>
-          born
-          <input
-            type='number'
-            value={born}
-            onChange={({ target }) => setBorn(target.value)}
-          />
-        </div>
-        <button type='submit'>update author</button>
-      </form>
+        </FormField>
+        <FormField fluid='true'>
+          <label>Born</label>
+          <input type='number' value={born} placeholder='Author birth year' 
+            onChange={({ target }) => setBorn(target.value)}/>
+        </FormField>
+        <Button fluid color='teal' type='submit'>Submit</Button>
+      </Form>
     </div>
   )
 }

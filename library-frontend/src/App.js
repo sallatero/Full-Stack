@@ -5,10 +5,8 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
 import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
-import UpdateAuthorForm from './components/UpdateAuthorForm'
 import { Subscription } from 'react-apollo'
 import BOOK_ADDED from './graphql/subscriptions/bookAdded'
-import UPDATE_AUTHOR_BORN from './graphql/mutations/updateAuthorBorn'
 import CREATE_BOOK from './graphql/mutations/createBook'
 import LOGIN from './graphql/mutations/login'
 import ALL_BOOKS from './graphql/queries/allBooks'
@@ -89,9 +87,7 @@ const App = () => {
       }
     }
   })
-  const updateBirthYear = useMutation(UPDATE_AUTHOR_BORN, {
-    refetchQueries: [{ query: ALL_AUTHORS }]
-  })
+
   const login = useMutation(LOGIN)
 
   const allAuthors = useQuery(ALL_AUTHORS)
@@ -164,24 +160,21 @@ const App = () => {
         </Menu.Menu>
         </Menu>
 
-      : <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('login')}>login</button>
-        </div>
+      :  <Menu secondary>
+          <Menu.Item name='authors' active={page === 'authors'} 
+            onClick={() => setPage('authors')}/>
+          <Menu.Item name='books' active={page === 'books'} 
+            onClick={() => setPage('books')}/>
+          <Menu.Menu position='right'>
+            <Menu.Item name='login'
+              onClick={() => setPage('login')}/>
+          </Menu.Menu>
+        </Menu>
       }
       <ErrorNotification message={errorMessage}/>
-      <Authors result={allAuthors}
+      <Authors result={allAuthors} token={token} handleError={handleError}
           show={page === 'authors'}
       />
-      {token     
-      ? <div>
-        <UpdateAuthorForm result={allAuthors} updateBirthYear={updateBirthYear}
-          handleError={handleError}
-          show={page === 'authors'}
-        /></div>
-      : <div/>
-      }
       <Books result={allBooks}
         show={page === 'books'}
       />

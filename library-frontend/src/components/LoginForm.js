@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Container, Header, Segment, Form, FormField, Button } from 'semantic-ui-react'
 
 const LoginForm = (props) => {
   const [username, setUsername] = useState('')
@@ -25,27 +26,30 @@ const LoginForm = (props) => {
   }
 
   return (
-    <div>
-      <h2>Login here</h2>
-      <form onSubmit={submit}>
-        <div>
-          username
-          <input 
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input 
-            type='password'
-            value={password}
-            onChange={({ target }) => setpassword(target.value)}
-          />
-        </div>
-        <button type='submit'>login</button>
-      </form>
-    </div>
+    <Container text>
+      <Segment.Group>
+        <Segment padded>
+          <Header size='large' color='teal'>Login here</Header>
+        </Segment>
+        <Segment.Group>
+          <Segment padded stacked>
+            <Form onSubmit={submit}>
+              <FormField fluid='true'>
+                <label>Username</label>
+                <input type='text' value={username} placeholder='Your username' 
+                  onChange={({ target }) => setUsername(target.value)}/>
+              </FormField>
+              <FormField fluid='true'>
+                <label>Password</label>
+                <input type='password' value={password} placeholder='Your password' 
+                  onChange={({ target }) => setpassword(target.value)}/>
+              </FormField>
+              <Button fluid color='teal' type='submit'>Login</Button>
+            </Form>
+          </Segment>
+        </Segment.Group>
+      </Segment.Group>
+    </Container>
   )
 }
 
