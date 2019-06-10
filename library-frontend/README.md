@@ -9,6 +9,7 @@
 <ul><li>username: salla</li>
 <li>password: secret</li></ul>
 
+##-----------------------------------------------------
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
