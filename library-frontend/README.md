@@ -1,3 +1,9 @@
+This is the frontend to a library app, where user can see a list of authors and books (with ability to filter by genre). Logged in user can in addition add new books and update author birth years. A logged in user also gets a page that lists all books in his/her favorite genre.
+
+Test login is
+username: 
+password:
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
