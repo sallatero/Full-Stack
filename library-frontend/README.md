@@ -1,5 +1,5 @@
-<h2> Library app - frontend </h2>
-<a href="https://github.com/sallatero/Full-Stack/tree/master/library-frontend">Check here the code for the frontend of this app</a>
+## Library app - frontend
+<a href="https://github.com/sallatero/Full-Stack/tree/master/graphql-kirjasto">Check here the code for the backend of this app</a>
 <br/>
 <p>This folder holds the frontend to a library app, where users can see a list of authors and books (with ability to filter by genre). Logged in user can in addition add new books and update author birth years. A logged in user also gets a page that lists all books in his/her favorite genre.</p>
 <h3>Technologies, languages and libraries used in this project </h3>
