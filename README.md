@@ -1,6 +1,7 @@
 # Projects from Full Stack MOOC course at Helsinki University
 <p>Here are the codes for my practice projects done during the course. Most are just here, but a few apps are also online for demonstration.</p>
-
+<br/>
+<br/>
 ## Blog listing app
 <h3>Technologies, languages and libraries used in this project </h3>
 <ul><li>React and JavaScript</li>
@@ -17,8 +18,10 @@ https://pure-falls-85818.herokuapp.com/
 
 <h3> See the code </h3>
 <a href="https://github.com/sallatero/Ultimate-webpack-bloglist-frontend">Frontend code repository</a>
+<br/>
 <a href="https://github.com/sallatero/Ultimate-webpack-bloglist-backend">Backend code repository</a>
-
+<br/>
+<br/>
 ## Library app
 <h3>Technologies, languages and libraries used in this project </h3>
 <ul><li>React and JavaScript</li>
@@ -34,8 +37,10 @@ https://pure-falls-85818.herokuapp.com/
 
 <h3> See the code </h3>
 <a href="https://github.com/sallatero/Full-Stack/tree/master/library-frontend">Frontend code repository</a>
+<br/>
 <a href="https://github.com/sallatero/Full-Stack/tree/master/graphql-kirjasto">Backend code repository</a>
-
+<br/>
+<br/>
 ## Bhone book application
 <h3>Technologies, languages and libraries used in this project </h3>
 <ul><li>React and JavaScript</li>
@@ -46,6 +51,7 @@ https://dry-meadow-49016.herokuapp.com/
 
 <h3> See the code </h3>
 <a href="https://github.com/sallatero/Full-Stack/tree/master/osa2/puhelinluettelo">Frontend code repository</a>
+<br/>
 <a href="https://github.com/sallatero/Backend_puhluettelo">Backend code repository</a>
 
 <br/>
