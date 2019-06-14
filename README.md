@@ -3,7 +3,7 @@
 <br/>
 
 ## Blog listing app
-<h3 font-style='italic'>Technologies, languages and libraries used in this project </h3>
+<h3>Technologies, languages and libraries used in this project </h3>
 <ul><li>React and JavaScript</li>
 <li>Redux for state management</li>
 <li>Webpack as module bundler</li>
