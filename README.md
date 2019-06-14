@@ -2,6 +2,7 @@
 <p>Here are the codes for my practice projects done during the course. Most are just here, but a few apps are also online for demonstration.</p>
 <br/>
 <br/>
+
 ## Blog listing app
 <h3>Technologies, languages and libraries used in this project </h3>
 <ul><li>React and JavaScript</li>
