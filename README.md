@@ -21,6 +21,8 @@ https://pure-falls-85818.herokuapp.com/
 <br/>
 <a href="https://github.com/sallatero/Ultimate-webpack-bloglist-backend">Backend code repository</a>
 <br/>
+<br/>
+<br/>
 
 ## Library app
 <h3>Technologies, languages and libraries used in this project </h3>
@@ -39,6 +41,8 @@ https://pure-falls-85818.herokuapp.com/
 <a href="https://github.com/sallatero/Full-Stack/tree/master/library-frontend">Frontend code repository</a>
 <br/>
 <a href="https://github.com/sallatero/Full-Stack/tree/master/graphql-kirjasto">Backend code repository</a>
+<br/>
+<br/>
 <br/>
 
 ## Bhone book application
