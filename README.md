@@ -2,7 +2,7 @@
 <p>Here are the codes for my practice projects done during the course. Most are just here, but a few apps are also online for demonstration.</p>
 <br/>
 
-### BLOG LISTING APP
+## BLOG LISTING APP
 <h3>Technologies, languages and libraries used in this project </h3>
 <ul><li>React and JavaScript</li>
 <li>Redux for state management</li>
@@ -45,7 +45,7 @@ https://pure-falls-85818.herokuapp.com/
 <br/>
 <br/>
 
-## Phone book application
+## PHONE BOOK APPLICATION
 <h3>Technologies, languages and libraries used in this project </h3>
 <ul><li>React and JavaScript</li>
 <li>Node.js, Axios</li></ul>
