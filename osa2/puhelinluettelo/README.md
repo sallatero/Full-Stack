@@ -5,8 +5,7 @@
 
 <h3>Technologies, languages and libraries used in this project </h3>
 <ul><li>React and JavaScript</li>
-<li>GraphQL and Apollo</li>
-<li>Semantic UI React</li></ul>
+<li>Axios</li></ul>
 
 <h3>This application runs online at </h3>
 https://dry-meadow-49016.herokuapp.com/
