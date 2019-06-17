@@ -27,7 +27,7 @@ const App = (props) => {
     console.log('Counterit nyt: ', hyva, neut, huono)
     return (
         <div>
-            <h1>{greeting}</h1>
+            <h1>Hei, anna palautetta!</h1>
             <Teenapit nappulat={nappulat} handlerit={[hyvaHandler, neutHandler, huonoHandler]}/>
             <h2>{subheader}</h2>
             <Teestats nappulat={nappulat} tila={[hyva, neut, huono]}/>
