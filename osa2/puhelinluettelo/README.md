@@ -1,9 +1,20 @@
-## Bhone book application
+## Phone book application - frontend
+<a href="https://github.com/sallatero/Backend_puhluettelo">Check here the code for the backend of this app</a>
+<br/>
+<p>This folder holds the frontend to a phone book app, where you can see a list of people and their phone numbers. You can also filter the list with search functionality and add new contacts.</p>
+
+<h3>Technologies, languages and libraries used in this project </h3>
+<ul><li>React and JavaScript</li>
+<li>GraphQL and Apollo</li>
+<li>Semantic UI React</li></ul>
+
 <h3>This application runs online at </h3>
 https://dry-meadow-49016.herokuapp.com/
+
 <br/>
 <br/>
 <br/>
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
