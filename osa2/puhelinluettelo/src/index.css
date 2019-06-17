@@ -16,6 +16,6 @@ code {
 .ui.grid > .row {
   padding: 10px 0 30px 0;
 }
-.ui.inverted.violet.table {
+.ui.collapsing.table {
   width: 100%;
 }

@@ -144,8 +144,8 @@ const App = () => {
 
     return (
         <Container fluid>
-          <Segment inverted color='violet' textAlign='center' padded='very'>
-            <Header as='h1'>PUHELINLUETTELO</Header>
+          <Segment color='violet' textAlign='center' padded='very'>
+            <Header color='violet' as='h1'>PUHELINLUETTELO</Header>
             <Container text>
               <Grid> 
                 <Grid.Row><Grid.Column>

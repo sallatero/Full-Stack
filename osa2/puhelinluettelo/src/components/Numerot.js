@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Table, Button, Header } from 'semantic-ui-react';
+import { Segment, Table, Button, Header, Container } from 'semantic-ui-react';
 
 
 const Numerot = (props) => {
@@ -13,14 +13,14 @@ const Numerot = (props) => {
     console.log('filtered: ', filtered);
     
     return (
-      <Segment fluid inverted color='violet' textAlign='center' padded='very'>
-        <Header as='h3'>Numerot</Header>
-        <Table inverted color='violet' columns='3' collapsing fluid textAlign='center'>
+      <Container fluid textAlign='center' padded='very'>
+        <Header color='violet' as='h3'>Numerot</Header>
+        <Table sortable color='violet' columns='3' collapsing fluid textAlign='center'>
           <Table.Body>
             {filtered.map(person => <Person key={person.id} person={person} remove={() => props.removeId(person.id)}/>)}
           </Table.Body>
         </Table>
-      </Segment>
+      </Container>
     )
 }
 

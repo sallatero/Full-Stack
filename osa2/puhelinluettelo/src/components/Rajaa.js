@@ -5,7 +5,7 @@ const Rajaa = (props) => {
     return (
       <Form>
         <FormField fluid='true'>
-          <Header as='h3'>Rajaa nimiä</Header>
+          <Header color='grey' as='h3'>Rajaa nimiä</Header>
           <input type='text' placeholder='Kirjoita nimen alku' 
             value={props.search} onChange={props.handler} />
         </FormField>
