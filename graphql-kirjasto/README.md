@@ -7,6 +7,9 @@
 <li>GraphQL and Apollo</li>
 <li>jsonwebtoken for authentication</li></ul>
 
+<h3>This application runs online at </h3>
+https://tranquil-river-73855.herokuapp.com/
+
 <h3> You can test it with these test credentials </h3>
 <ul><li>username: testuser</li>
 <li>password: secret</li></ul>
