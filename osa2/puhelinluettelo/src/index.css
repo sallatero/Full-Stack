@@ -12,3 +12,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.ui.grid > .row {
+  padding: 10px 0 30px 0;
+}
+.ui.inverted.violet.table {
+  width: 100%;
+}

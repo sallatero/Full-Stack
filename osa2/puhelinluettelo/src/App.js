@@ -4,6 +4,8 @@ import Uusi from './components/Uusi'
 import Rajaa from './components/Rajaa'
 import personService from './services/persons'
 import Kayttajaviestit from './components/Kayttajaviestit'
+import { Container, Segment, Header, Grid } from 'semantic-ui-react'
+import './index.css'
 
 //Puhelinluettelo Frontend
 
@@ -141,15 +143,27 @@ const App = () => {
     }
 
     return (
-        <div>
-            <h1>Puhelinluettelo</h1>
-            <Kayttajaviestit message={message} err={err}/>
-            <Rajaa search={search} handler={handleChangeSearch}/>
-            <h2>Lisää uusi</h2>
-            <Uusi handleSubmit={handleSubmit} newName={newName} newNro={newNro} changeName={handleChangeName} changeNro={handleChangeNro}/>
-            <h2>Numerot</h2>
-            <Numerot persons={persons} search={search} removeId={removeId}/>
-        </div>
+        <Container fluid>
+          <Segment inverted color='violet' textAlign='center' padded='very'>
+            <Header as='h1'>PUHELINLUETTELO</Header>
+            <Container text>
+              <Grid> 
+                <Grid.Row><Grid.Column>
+                  <Kayttajaviestit message={message} err={err}/>
+                </Grid.Column></Grid.Row>
+                <Grid.Row><Grid.Column>
+                  <Rajaa search={search} handler={handleChangeSearch}/>
+                </Grid.Column></Grid.Row>
+                <Grid.Row><Grid.Column>
+                  <Uusi handleSubmit={handleSubmit} newName={newName} newNro={newNro} changeName={handleChangeName} changeNro={handleChangeNro}/>
+                </Grid.Column></Grid.Row>
+                <Grid.Row><Grid.Column>
+                  <Numerot persons={persons} search={search} removeId={removeId}/>
+                </Grid.Column></Grid.Row>
+              </Grid>
+            </Container>
+          </Segment>
+        </Container>
     )
 }
 

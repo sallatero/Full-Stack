@@ -1,4 +1,5 @@
 import React from 'react';
+import { Segment, Table, Button, Header } from 'semantic-ui-react';
 
 
 const Numerot = (props) => {
@@ -12,22 +13,31 @@ const Numerot = (props) => {
     console.log('filtered: ', filtered);
     
     return (
-        <div className="name-list">
-             {filtered.map(person => <Person key={person.id} person={person} remove={() => props.removeId(person.id)}/>)}
-        </div>
+      <Segment fluid inverted color='violet' textAlign='center' padded='very'>
+        <Header as='h3'>Numerot</Header>
+        <Table inverted color='violet' columns='3' collapsing fluid textAlign='center'>
+          <Table.Body>
+            {filtered.map(person => <Person key={person.id} person={person} remove={() => props.removeId(person.id)}/>)}
+          </Table.Body>
+        </Table>
+      </Segment>
     )
 }
 
 const Person = (props) => {
     return (
-        <p>{props.person.name}: {props.person.number}<button onClick={props.remove}>poista</button></p>
+     <Table.Row>
+       <Table.Cell>
+        {props.person.name}
+       </Table.Cell>
+       <Table.Cell>
+        {props.person.number}
+       </Table.Cell>
+       <Table.Cell>
+        <Button compact floated='right' onClick={props.remove}>Poista</Button>
+       </Table.Cell>
+     </Table.Row>
     )
 }
-
-/*
-const Poistonappi = (props) => {
-    //onClickille pitää antaa funktio, eli () => tapahtumankästehdas(id)
-    return <button onClick={() => props.removeId(props.id)}>poista</button>
-}*/
 
 export default Numerot
