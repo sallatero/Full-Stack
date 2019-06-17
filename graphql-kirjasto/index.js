@@ -37,7 +37,9 @@ const server = new ApolloServer({
   }
 })
 
-server.listen().then(({ url, subscriptionsUrl }) => {
+const PORT = process.env.PORT || 4000
+
+server.listen(PORT).then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`)
   console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })
