@@ -8,7 +8,7 @@
 <li>Semantic UI React</li></ul>
 
 <h3> You can test it with these test credentials </h3>
-<ul><li>username: salla</li>
+<ul><li>username: testuser</li>
 <li>password: secret</li></ul>
 
 <br/>
