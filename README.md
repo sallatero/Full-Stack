@@ -31,10 +31,10 @@ https://pure-falls-85818.herokuapp.com/
 <li>Semantic UI React</li></ul>
 
 <h3>This application runs online at </h3>
-<p>LINK MISSING</p>
+https://tranquil-river-73855.herokuapp.com/
 
 <h3> You can test it with these test credentials </h3>
-<ul><li>username: salla</li>
+<ul><li>username: testuser</li>
 <li>password: secret</li></ul>
 
 <h3> See the code </h3>
