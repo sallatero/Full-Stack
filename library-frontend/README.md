@@ -1,3 +1,21 @@
+## Library app - frontend
+<a href="https://github.com/sallatero/Full-Stack/tree/master/graphql-kirjasto">Check here the code for the backend of this app</a>
+<br/>
+<p>This folder holds the frontend to a library app, where users can see a list of authors and books (with ability to filter by genre). Logged in user can in addition add new books and update author birth years. A logged in user also gets a page that lists all books in his/her favorite genre.</p>
+<h3>Technologies, languages and libraries used in this project </h3>
+<ul><li>React and JavaScript</li>
+<li>GraphQL and Apollo</li>
+<li>Semantic UI React</li></ul>
+
+<h3> You can test it with these test credentials </h3>
+<ul><li>username: testuser</li>
+<li>password: secret</li></ul>
+
+<br/>
+<br/>
+<br/>
+
+## 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
